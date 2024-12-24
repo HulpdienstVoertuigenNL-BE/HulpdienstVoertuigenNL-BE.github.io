@@ -82,11 +82,8 @@
 
         .image-row {
             display: flex;
-            justify-content: center;
-            gap: 10px;
+            justify-content: space-evenly; /* Verdeel de afbeeldingen gelijkmatig */
             margin-top: 20px;
-            flex-wrap: nowrap; /* Zorg dat ze naast elkaar blijven */
-            overflow-x: auto; /* Maak horizontaal scrollen mogelijk */
         }
 
         .image-container {
@@ -96,7 +93,7 @@
         }
 
         .image-container img {
-            width: 100%; /* Zorg dat de afbeeldingen zich aanpassen */
+            width: 100%;
             height: auto; /* Behoud de verhoudingen */
             border-radius: 10px;
         }
@@ -173,21 +170,15 @@
     <div class="image-row">
         <div class="image-container">
             <img src="files/images/voertuig1.jpg" alt="Voertuig 1">
-            <p>
-                <a href="https://www.facebook.com/kor.heidinga" target="_blank" style="color: #fff; text-decoration: underline;">©Kor Heidinga</a>
-            </p>
+            <p>Kor Heidinga</p>
         </div>
         <div class="image-container">
             <img src="files/images/voertuig2.jpg" alt="Voertuig 2">
-            <p>
-                <a href="https://www.facebook.com/kor.heidinga" target="_blank" style="color: #fff; text-decoration: underline;">©Kor Heidinga</a>
-            </p>
+            <p>Kor Heidinga</p>
         </div>
         <div class="image-container">
             <img src="files/images/voertuig3.jpg" alt="Voertuig 3">
-            <p>
-                <a href="https://www.facebook.com/kor.heidinga" target="_blank" style="color: #fff; text-decoration: underline;">©Kor Heidinga</a>
-            </p>
+            <p>Kor Heidinga</p>
         </div>
     </div>
 </body>

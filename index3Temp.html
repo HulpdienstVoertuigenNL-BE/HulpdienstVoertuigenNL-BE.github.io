@@ -22,85 +22,21 @@
             padding: 0;
         }
 
-        .slider {
-            width: 100%;
-            height: 500px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slide {
-            width: 100%;
-            height: 500px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            transition: opacity 1s;
-        }
-
-        .slide.current {
-            opacity: 1;
-        }
-
-        .content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .content h1 {
-            font-size: 5em;
-            margin-bottom: 0.5em;
-        }
-
-        .content p {
-            font-size: 1.5em;
-            margin-bottom: 1em;
-        }
-
-        .image-row {
+        .button-container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
             margin-top: 20px;
-            flex-wrap: nowrap; /* Zorg dat ze naast elkaar blijven */
-        }
-
-        .image-container {
-            text-align: center;
-            flex: 0 0 calc(33.333% - 10px); /* Zorg voor gelijke breedtes */
-            max-width: 300px; /* Verhoog de maximale breedte van de afbeelding */
-        }
-
-        .image-container img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        .image-container p {
-            margin-top: 10px;
-            font-size: 1.2em;
-            color: #fff;
-        }
-
-        /* Nieuwe blokken stijl voor afbeeldingen */
-        .blocks-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
-            gap: 20px;
-            justify-items: center;
-            width: 100%;
         }
 
         .block {
-            padding: 0;
+            flex: 1 1 calc(20% - 10px); /* Zorgt voor gelijke breedtes */
+            margin: 10px;
             text-align: center;
-            margin: 5px 0;
-            cursor: pointer;
-            display: block;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #333;
         }
 
         .block img {
@@ -114,116 +50,62 @@
             transform: scale(1.05); /* Kleine zoom bij hover */
         }
 
-        /* Responsive styles */
+        /* Specifieke stijl voor de Politie afbeelding */
+        .block img[alt="Politie"] {
+            max-width: 90%; /* Politie afbeelding iets kleiner maken */
+            margin: 0 auto; /* Zorgt ervoor dat de afbeelding in het midden blijft */
+        }
+
         @media (max-width: 768px) {
-            .slider {
-                height: 300px;
-            }
-
-            .slide {
-                height: 300px;
-            }
-
-            .content h1 {
-                font-size: 2.5em;
-            }
-
-            .content p {
-                font-size: 1.2em;
-            }
-
-            .image-container {
-                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
-            }
-
-            .image-container p {
-                font-size: 1em;
-            }
-
-            .blocks-container {
-                grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+            .block {
+                flex: 1 1 calc(50% - 10px); /* 2 kolommen op kleinere schermen */
             }
         }
 
-        @media (min-width: 768px) {
-            .image-container {
-                max-width: 350px; /* Verhoog de maximale breedte van de afbeelding op grotere schermen */
-            }
-
-            .blocks-container {
-                grid-template-columns: repeat(5, 1fr); /* Vijf kolommen op grotere schermen */
+        @media (max-width: 480px) {
+            .block {
+                flex: 1 1 100%; /* 1 kolom op mobiele schermen */
             }
         }
     </style>
 </head>
 <body>
-    <div class="slider">
-        <div class="slide current">
-            <div class="content">
-                <h1>Hulpdienst Voertuigen</h1>
-                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
-            </div>
+
+    <div class="button-container">
+        <div class="block">
+            <img src="files/images/Politie.png" alt="Politie">
         </div>
-        <div class="slide">
-            <div class="content">
-                <h1>Hulpdienst Voertuigen</h1>
-                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
-            </div>
+        <div class="block">
+            <img src="files/images/Brandweer.png" alt="Brandweer">
         </div>
-        <div class="slide">
-            <div class="content">
-                <h1>Hulpdienst Voertuigen</h1>
-                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
-            </div>
+        <div class="block">
+            <img src="files/images/Ambulance.png" alt="Ambulance">
+        </div>
+        <div class="block">
+            <img src="files/images/Reddingsbrigade.png" alt="Reddingsbrigade">
+        </div>
+        <div class="block">
+            <img src="files/images/KNRM.png" alt="KNRM">
+        </div>
+        <div class="block">
+            <img src="files/images/Prorail.png" alt="ProRail">
+        </div>
+        <div class="block">
+            <img src="files/images/Rijkswaterstaat.png" alt="Rijkswaterstaat">
+        </div>
+        <div class="block">
+            <img src="files/images/Ziekenhuis.png" alt="Ziekenhuizen">
+        </div>
+        <div class="block">
+            <img src="files/images/Scholen.png" alt="Scholen">
+        </div>
+        <div class="block">
+            <img src="files/images/Meldkamers.png" alt="Meldkamers">
+        </div>
+        <div class="block">
+            <img src="files/images/Provincies.png" alt="Provincies">
         </div>
     </div>
 
-    <div class="image-row">
-        <div class="image-container">
-            <img src="files/images/voertuig1.jpg" alt="Voertuig 1">
-        </div>
-        <div class="image-container">
-            <img src="files/images/voertuig2.jpg" alt="Voertuig 2">
-        </div>
-        <div class="image-container">
-            <img src="files/images/voertuig3.jpg" alt="Voertuig 3">
-        </div>
-    </div>
-
-    <div class="blocks-container">
-        <div class="block">
-            <img src="files/images/indeximages/Politie.png" alt="Politie">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Brandweer.png" alt="Brandweer">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Ambulance.png" alt="Ambulance">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Reddingsbrigade.png" alt="Reddingsbrigade">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/KNRM.png" alt="KNRM">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Prorail.png" alt="ProRail">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Rijkswaterstaat.png" alt="Rijkswaterstaat">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Ziekenhuis.png" alt="Ziekenhuizen">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Scholen.png" alt="Scholen">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Meldkamers.png" alt="Meldkamers">
-        </div>
-        <div class="block">
-            <img src="files/images/indeximages/Provincies.png" alt="Provincies">
-        </div>
-    </div>
 </body>
 </html>

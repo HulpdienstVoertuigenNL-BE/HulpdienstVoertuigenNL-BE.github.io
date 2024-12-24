@@ -61,6 +61,31 @@
             margin-bottom: 1em;
         }
 
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: nowrap; /* Zorg dat ze naast elkaar blijven */
+        }
+
+        .image-container {
+            text-align: center;
+            flex: 0 0 calc(33.333% - 10px); /* Zorg voor gelijke breedtes */
+            max-width: 300px; /* Verhoog de maximale breedte van de afbeelding */
+        }
+
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .image-container p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+
         /* Nieuwe blokken stijl voor afbeeldingen */
         .blocks-container {
             display: grid;
@@ -68,8 +93,6 @@
             gap: 20px;
             justify-items: center;
             width: 100%;
-            padding: 20px;
-            margin-top: 20px; /* Zorg voor wat ruimte boven de blokken */
         }
 
         .block {
@@ -78,39 +101,18 @@
             margin: 5px 0;
             cursor: pointer;
             display: block;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-            width: 100%; /* Zorg ervoor dat de blokken de volledige breedte innemen */
-            max-width: 200px; /* Verlaag de maximale breedte om de knoppen kleiner te maken */
-            margin-top: 10px; /* Wat extra ruimte tussen de blokken */
+            width: 90%; /* Zorg dat de blokken kleiner zijn op mobiel */
         }
 
         .block img {
-            width: 100%; /* Zorg ervoor dat de afbeelding altijd 100% van de containerbreedte vult */
-            height: auto; /* Verhoudingen behouden */
+            width: 100%;
+            height: auto;
             border-radius: 10px;
             transition: transform 0.3s ease;
         }
 
-        /* Afbeeldingen van voertuigen naast elkaar */
-        .image-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px; /* Ruimte tussen de afbeeldingen */
-            margin-top: 20px;
-            padding-left: 10%; /* Verplaats de afbeeldingen iets naar rechts */
-        }
-
-        .image-container {
-            text-align: center;
-            flex: 1;
-            max-width: 300px; /* Verhoog de breedte indien nodig */
-        }
-
-        .image-container img {
-            width: 100%;
-            border-radius: 10px;
+        .block img:hover {
+            transform: scale(1.05); /* Kleine zoom bij hover */
         }
 
         /* Responsive styles */
@@ -131,15 +133,18 @@
                 font-size: 1.2em;
             }
 
-            /* Blokken aanpassen op mobiele weergave */
+            .image-row {
+                flex-direction: column; /* Zorg ervoor dat de afbeeldingen onder elkaar staan */
+            }
+
             .blocks-container {
-                grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiele schermen */
-                margin-left: 10px; /* Verplaats de blokken iets naar links */
-                margin-top: 10px; /* Verminder de ruimte boven de blokken */
+                grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+                justify-items: center; /* Centraal uitlijnen */
+                gap: 15px; /* Ruimte tussen de blokken */
             }
 
             .image-container {
-                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
+                max-width: 150px; /* Verklein de afbeeldingen op kleinere schermen */
             }
 
             .image-container p {
@@ -148,12 +153,12 @@
         }
 
         @media (min-width: 768px) {
-            .blocks-container {
-                grid-template-columns: repeat(5, 1fr); /* Vijf kolommen op grotere schermen */
-            }
-
             .image-container {
                 max-width: 350px; /* Verhoog de maximale breedte van de afbeelding op grotere schermen */
+            }
+
+            .blocks-container {
+                grid-template-columns: repeat(5, 1fr); /* Vijf kolommen op grotere schermen */
             }
         }
     </style>
@@ -180,7 +185,6 @@
         </div>
     </div>
 
-    <!-- Afbeeldingen van voertuigen naast elkaar -->
     <div class="image-row">
         <div class="image-container">
             <img src="files/images/voertuig1.jpg" alt="Voertuig 1">
@@ -193,7 +197,6 @@
         </div>
     </div>
 
-    <!-- Afbeeldingen blokken -->
     <div class="blocks-container">
         <div class="block">
             <img src="files/images/indeximages/Politie.png" alt="Politie">

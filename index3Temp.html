@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HulpdienstvoertuigenNL-BE</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="HulpdienstvoertuigenNL-BE">
+    <meta property="og:description" content="Informatie over hulpdienstvoertuigen in Nederland en België">
+    <meta property="og:image" content="URL WebsiteIcon.">
+    <meta property="og:url" content="https://hulpdienstvoertuigennl-be.github.io/">
+    <meta property="og:type" content="website">
+    
+    <style>
+        body {
+            background: url('/files/images/background.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 500px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .slide.current {
+            opacity: 1;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 5em;
+            margin-bottom: 0.5em;
+        }
+
+        .content p {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .button-container .button {
+            font-size: 1.2em;
+            padding: 0.5em 1em;
+            margin: 0.5em;
+            border: none;
+            border-radius: 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: nowrap; /* Zorg dat ze naast elkaar blijven */
+            overflow-x: auto; /* Maak horizontaal scrollen mogelijk */
+        }
+
+        .image-container {
+            text-align: center;
+            flex: 1 1 auto; /* Zorg dat afbeeldingen zich aanpassen */
+            max-width: 200px;
+        }
+
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .image-container p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .slider {
+                height: 300px;
+            }
+
+            .slide {
+                height: 300px;
+            }
+
+            .content h1 {
+                font-size: 2.5em;
+            }
+
+            .content p {
+                font-size: 1.2em;
+            }
+
+            .image-container {
+                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
+            }
+
+            .image-container p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slider {
+                height: 200px;
+            }
+
+            .slide {
+                height: 200px;
+            }
+
+            .content h1 {
+                font-size: 2em;
+            }
+
+            .content p {
+                font-size: 1em;
+            }
+
+            .button-container .button {
+                font-size: 1em;
+                padding: 0.4em 0.8em;
+                margin: 0.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <div class="slide current">
+            <div class="content">
+                <h1>Hulpdienst Voertuigen</h1>
+                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>Hulpdienst Voertuigen</h1>
+                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
+            </div>
+        </div>
+        <div class="slide">
+            <div class="content">
+                <h1>Hulpdienst Voertuigen</h1>
+                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <a class="button" href="files/voertuigoverzichten">VoertuigOverzichten</a>
+        <a class="button" href="files/overig">Overige Overzichten</a>
+        <a class="button" href="files/contact">Contact</a>
+    </div>
+
+    <div class="image-row">
+        <div class="image-container">
+            <img src="files/images/voertuig1.png" alt="Voertuig 1">
+            <p>Voertuig 1</p>
+        </div>
+        <div class="image-container">
+            <img src="files/images/voertuig2.png" alt="Voertuig 2">
+            <p>Voertuig 2</p>
+        </div>
+        <div class="image-container">
+            <img src="files/images/voertuig3.png" alt="Voertuig 3">
+            <p>Voertuig 3</p>
+        </div>
+    </div>
+</body>
+</html>

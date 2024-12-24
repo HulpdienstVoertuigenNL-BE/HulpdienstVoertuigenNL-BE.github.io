@@ -66,13 +66,13 @@
             justify-content: center;
             gap: 10px;
             margin-top: 20px;
-            flex-wrap: wrap; /* Zorg dat de afbeeldingen naast elkaar blijven en kunnen doorlopen */
+            flex-wrap: wrap;
         }
 
         .image-container {
             text-align: center;
-            flex: 0 0 calc(33.333% - 10px); /* Zorg voor gelijke breedtes */
-            max-width: 300px; /* Verhoog de maximale breedte van de afbeelding */
+            flex: 0 0 calc(33.333% - 10px);
+            max-width: 300px;
         }
 
         .image-container img {
@@ -89,7 +89,7 @@
         /* Nieuwe blokken stijl voor afbeeldingen */
         .blocks-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             justify-items: center;
             width: 100%;
@@ -101,7 +101,7 @@
             margin: 5px 0;
             cursor: pointer;
             display: block;
-            width: 90%; /* Zorg dat de blokken kleiner zijn op mobiel */
+            width: 80%; /* Knoppen worden kleiner */
         }
 
         .block img {
@@ -112,7 +112,7 @@
         }
 
         .block img:hover {
-            transform: scale(1.05); /* Kleine zoom bij hover */
+            transform: scale(1.05);
         }
 
         /* Responsive styles */
@@ -134,13 +134,13 @@
             }
 
             .blocks-container {
-                grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
-                justify-items: center; /* Centraal uitlijnen */
-                gap: 15px; /* Ruimte tussen de blokken */
+                grid-template-columns: repeat(2, 1fr);
+                justify-items: center;
+                gap: 15px;
             }
 
             .image-container {
-                max-width: 150px; /* Verklein de afbeeldingen op kleinere schermen */
+                max-width: 150px;
             }
 
             .image-container p {
@@ -150,11 +150,11 @@
 
         @media (min-width: 768px) {
             .image-container {
-                max-width: 500px; /* Verhoog de maximale breedte van de afbeelding op grotere schermen */
+                max-width: 500px;
             }
 
             .blocks-container {
-                grid-template-columns: repeat(5, 1fr); /* Vijf kolommen op grotere schermen */
+                grid-template-columns: repeat(5, 1fr);
             }
         }
     </style>

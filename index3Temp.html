@@ -22,21 +22,64 @@
             padding: 0;
         }
 
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
+        .slider {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 500px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .slide.current {
+            opacity: 1;
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 5em;
+            margin-bottom: 0.5em;
+        }
+
+        .content p {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        /* Nieuwe blokken stijl voor afbeeldingen */
+        .blocks-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+            gap: 20px;
+            justify-items: center;
+            width: 100%;
+            padding: 20px;
         }
 
         .block {
-            flex: 1 1 calc(20% - 10px); /* Zorgt voor gelijke breedtes */
-            margin: 10px;
+            padding: 0;
             text-align: center;
-            border-radius: 10px;
-            overflow: hidden;
+            margin: 5px 0;
+            cursor: pointer;
+            display: block;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: #333;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
         }
 
         .block img {
@@ -50,62 +93,97 @@
             transform: scale(1.05); /* Kleine zoom bij hover */
         }
 
-        /* Specifieke stijl voor de Politie afbeelding */
-        .block img[alt="Politie"] {
-            max-width: 90%; /* Politie afbeelding iets kleiner maken */
-            margin: 0 auto; /* Zorgt ervoor dat de afbeelding in het midden blijft */
-        }
-
+        /* Responsive styles */
         @media (max-width: 768px) {
-            .block {
-                flex: 1 1 calc(50% - 10px); /* 2 kolommen op kleinere schermen */
+            .slider {
+                height: 300px;
+            }
+
+            .slide {
+                height: 300px;
+            }
+
+            .content h1 {
+                font-size: 2.5em;
+            }
+
+            .content p {
+                font-size: 1.2em;
+            }
+
+            .blocks-container {
+                grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
             }
         }
 
-        @media (max-width: 480px) {
-            .block {
-                flex: 1 1 100%; /* 1 kolom op mobiele schermen */
+        @media (min-width: 768px) {
+            .blocks-container {
+                grid-template-columns: repeat(5, 1fr); /* Vijf kolommen op grotere schermen */
+            }
+
+            .image-container {
+                max-width: 350px; /* Verhoog de maximale breedte van de afbeelding op grotere schermen */
             }
         }
     </style>
 </head>
 <body>
-
-    <div class="button-container">
-        <div class="block">
-            <img src="files/images/Politie.png" alt="Politie">
+    <div class="slider">
+        <div class="slide current">
+            <div class="content">
+                <h1>Hulpdienst Voertuigen</h1>
+                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
+            </div>
         </div>
-        <div class="block">
-            <img src="files/images/Brandweer.png" alt="Brandweer">
+        <div class="slide">
+            <div class="content">
+                <h1>Hulpdienst Voertuigen</h1>
+                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
+            </div>
         </div>
-        <div class="block">
-            <img src="files/images/Ambulance.png" alt="Ambulance">
-        </div>
-        <div class="block">
-            <img src="files/images/Reddingsbrigade.png" alt="Reddingsbrigade">
-        </div>
-        <div class="block">
-            <img src="files/images/KNRM.png" alt="KNRM">
-        </div>
-        <div class="block">
-            <img src="files/images/Prorail.png" alt="ProRail">
-        </div>
-        <div class="block">
-            <img src="files/images/Rijkswaterstaat.png" alt="Rijkswaterstaat">
-        </div>
-        <div class="block">
-            <img src="files/images/Ziekenhuis.png" alt="Ziekenhuizen">
-        </div>
-        <div class="block">
-            <img src="files/images/Scholen.png" alt="Scholen">
-        </div>
-        <div class="block">
-            <img src="files/images/Meldkamers.png" alt="Meldkamers">
-        </div>
-        <div class="block">
-            <img src="files/images/Provincies.png" alt="Provincies">
+        <div class="slide">
+            <div class="content">
+                <h1>Hulpdienst Voertuigen</h1>
+                <p>Groot aantal hulpdienstvoertuigen van Nederland en België</p>
+            </div>
         </div>
     </div>
 
+    <!-- Afbeeldingen blokken -->
+    <div class="blocks-container">
+        <div class="block">
+            <img src="files/images/indeximages/Politie.png" alt="Politie">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Brandweer.png" alt="Brandweer">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Ambulance.png" alt="Ambulance">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Reddingsbrigade.png" alt="Reddingsbrigade">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/KNRM.png" alt="KNRM">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/ProRail.png" alt="ProRail">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Rijkswaterstaat.png" alt="Rijkswaterstaat">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Ziekenhuizen.png" alt="Ziekenhuizen">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Scholen.png" alt="Scholen">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Meldkamers.png" alt="Meldkamers">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Provincies.png" alt="Provincies">
+        </div>
+    </div>
 </body>
 </html>

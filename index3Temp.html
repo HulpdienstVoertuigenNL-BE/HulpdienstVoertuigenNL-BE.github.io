@@ -81,17 +81,15 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             transition: transform 0.3s ease;
+            width: 100%; /* Zorg ervoor dat de blokken de volledige breedte innemen */
+            max-width: 300px; /* Maximale breedte om de grootte consistent te maken */
         }
 
         .block img {
-            width: 100%;
-            height: auto;
+            width: 100%; /* Zorg ervoor dat de afbeelding altijd 100% van de containerbreedte vult */
+            height: auto; /* Verhoudingen behouden */
             border-radius: 10px;
             transition: transform 0.3s ease;
-        }
-
-        .block img:hover {
-            transform: scale(1.05); /* Kleine zoom bij hover */
         }
 
         /* Afbeeldingen van voertuigen naast elkaar */

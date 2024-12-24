@@ -85,13 +85,13 @@
             justify-content: center;
             gap: 10px;
             margin-top: 20px;
-            flex-wrap: nowrap; /* Zorg dat ze naast elkaar blijven */
+            flex-wrap: nowrap;
         }
 
         .image-container {
             text-align: center;
-            flex: 0 0 calc(33.333% - 10px); /* Zorg voor gelijke breedtes */
-            max-width: 300px; /* Verhoog de maximale breedte van de afbeelding */
+            flex: 0 0 calc(33.333% - 10px);
+            max-width: 300px;
         }
 
         .image-container img {
@@ -103,6 +103,28 @@
             margin-top: 10px;
             font-size: 1.2em;
             color: #fff;
+        }
+
+        .blocks-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .block {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .block:hover {
+            background-color: #555;
         }
 
         /* Responsive styles */
@@ -124,20 +146,54 @@
             }
 
             .image-container {
-                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
+                max-width: 150px;
             }
 
             .image-container p {
                 font-size: 1em;
             }
-        }
 
-        @media (min-width: 768px) {
-            .image-container {
-                max-width: 350px; /* Verhoog de maximale breedte van de afbeelding op grotere schermen */
+            .blocks-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .block {
+                font-size: 1.2em;
             }
         }
 
+        @media (max-width: 480px) {
+            .slider {
+                height: 200px;
+            }
+
+            .slide {
+                height: 200px;
+            }
+
+            .content h1 {
+                font-size: 2em;
+            }
+
+            .content p {
+                font-size: 1em;
+            }
+
+            .button-container .button {
+                font-size: 1em;
+                padding: 0.4em 0.8em;
+                margin: 0.3em;
+            }
+
+            .blocks-container {
+                grid-template-columns: 1fr;
+            }
+
+            .block {
+                font-size: 1.1em;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -179,5 +235,20 @@
             <img src="files/images/voertuig3.jpg" alt="Voertuig 3">
         </div>
     </div>
+
+    <div class="blocks-container">
+        <div class="block">Politie</div>
+        <div class="block">Brandweer</div>
+        <div class="block">Ambulance</div>
+        <div class="block">Reddingsbrigade</div>
+        <div class="block">KNRM</div>
+        <div class="block">ProRail</div>
+        <div class="block">Rijkswaterstaat</div>
+        <div class="block">Ziekenhuizen</div>
+        <div class="block">Scholen</div>
+        <div class="block">Meldkamers</div>
+        <div class="block">Provincies</div>
+    </div>
+
 </body>
 </html>

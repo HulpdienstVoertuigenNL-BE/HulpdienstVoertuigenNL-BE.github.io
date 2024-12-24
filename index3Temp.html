@@ -82,51 +82,62 @@
 
         .image-row {
             display: flex;
-            justify-content: space-evenly; /* Verdeel de afbeeldingen gelijkmatig */
+            justify-content: center;
+            gap: 10px;
             margin-top: 20px;
+            flex-wrap: nowrap; /* Zorg dat ze naast elkaar blijven */
         }
 
         .image-container {
             text-align: center;
             flex: 0 0 calc(33.333% - 10px); /* Zorg voor gelijke breedtes */
-            max-width: 200px;
+            max-width: 300px; /* Verhoog de maximale breedte van de afbeelding */
         }
 
         .image-container img {
             width: 100%;
-            height: auto; /* Behoud de verhoudingen */
             border-radius: 10px;
         }
 
-        @media (max-width: 768px) {
-            .image-container {
-                flex: 0 0 calc(33.333% - 5px); /* Pas marges aan voor kleinere schermen */
-            }
+        .image-container p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #fff;
         }
 
-        @media (max-width: 480px) {
+        /* Responsive styles */
+        @media (max-width: 768px) {
             .slider {
-                height: 200px;
+                height: 300px;
             }
 
             .slide {
-                height: 200px;
+                height: 300px;
             }
 
             .content h1 {
-                font-size: 2em;
+                font-size: 2.5em;
             }
 
             .content p {
-                font-size: 1em;
+                font-size: 1.2em;
             }
 
-            .button-container .button {
+            .image-container {
+                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
+            }
+
+            .image-container p {
                 font-size: 1em;
-                padding: 0.4em 0.8em;
-                margin: 0.3em;
             }
         }
+
+        @media (min-width: 768px) {
+            .image-container {
+                max-width: 350px; /* Verhoog de maximale breedte van de afbeelding op grotere schermen */
+            }
+        }
+
     </style>
 </head>
 <body>

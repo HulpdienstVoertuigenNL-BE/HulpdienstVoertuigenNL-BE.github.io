@@ -107,7 +107,7 @@
 
         .blocks-container {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5, 1fr); /* 5 kolommen voor grote schermen */
             gap: 20px;
             margin-top: 40px;
         }
@@ -130,37 +130,13 @@
         /* Responsive styles */
         @media (max-width: 1024px) {
             .blocks-container {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(3, 1fr); /* 3 kolommen voor schermen kleiner dan 1024px */
             }
         }
 
         @media (max-width: 768px) {
-            .slider {
-                height: 300px;
-            }
-
-            .slide {
-                height: 300px;
-            }
-
-            .content h1 {
-                font-size: 2.5em;
-            }
-
-            .content p {
-                font-size: 1.2em;
-            }
-
-            .image-container {
-                max-width: 150px;
-            }
-
-            .image-container p {
-                font-size: 1em;
-            }
-
             .blocks-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 kolommen op mobiel */
+                grid-template-columns: repeat(2, 1fr); /* 2 kolommen voor kleinere schermen */
             }
 
             .block {
@@ -192,7 +168,7 @@
             }
 
             .blocks-container {
-                grid-template-columns: 1fr; /* 1 kolom op kleinere mobiele schermen */
+                grid-template-columns: 1fr; /* 1 kolom voor kleinere mobiele schermen */
             }
 
             .block {

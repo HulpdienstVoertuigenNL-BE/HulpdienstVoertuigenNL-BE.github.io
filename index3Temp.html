@@ -86,6 +86,34 @@
             color: #fff;
         }
 
+        /* Nieuwe blokken stijl voor afbeeldingen */
+        .blocks-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+            gap: 20px;
+            justify-items: center;
+            width: 100%;
+        }
+
+        .block {
+            padding: 0;
+            text-align: center;
+            margin: 5px 0;
+            cursor: pointer;
+            display: block;
+        }
+
+        .block img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .block img:hover {
+            transform: scale(1.05); /* Kleine zoom bij hover */
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .slider {
@@ -113,27 +141,7 @@
             }
 
             .blocks-container {
-                display: grid;
                 grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
-                gap: 20px; /* Meer ruimte tussen de kolommen */
-                justify-items: center;
-                width: 100%;
-            }
-
-            .block {
-                font-size: 0.8em; /* Kleinere tekst */
-                padding: 6px; /* Minder padding */
-                text-align: center;
-                margin: 5px 0;
-                background-color: #333;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-                min-height: 60px; /* Kleinere hoogte */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%; /* Zorg dat de blokken even breed zijn */
             }
         }
 
@@ -143,27 +151,7 @@
             }
 
             .blocks-container {
-                display: grid;
                 grid-template-columns: repeat(5, 1fr); /* Vijf kolommen op grotere schermen */
-                gap: 20px; /* Meer ruimte tussen de kolommen */
-                justify-items: center;
-                width: 100%;
-            }
-
-            .block {
-                font-size: 0.85em; /* Kleinere tekst voor desktop */
-                padding: 8px; /* Minder padding */
-                text-align: center;
-                margin: 5px 0;
-                background-color: #333;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-                min-height: 70px; /* Kleinere hoogte */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%; /* Zorg dat de blokken even breed zijn */
             }
         }
     </style>
@@ -203,17 +191,39 @@
     </div>
 
     <div class="blocks-container">
-        <div class="block">Politie</div>
-        <div class="block">Brandweer</div>
-        <div class="block">Ambulance</div>
-        <div class="block">Reddingsbrigade</div>
-        <div class="block">KNRM</div>
-        <div class="block">ProRail</div>
-        <div class="block">Rijkswaterstaat</div>
-        <div class="block">Ziekenhuizen</div>
-        <div class="block">Scholen</div>
-        <div class="block">Meldkamers</div>
-        <div class="block">Provincies</div>
+        <div class="block">
+            <img src="files/images/indeximages/Politie.png" alt="Politie">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Brandweer.png" alt="Brandweer">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Ambulance.png" alt="Ambulance">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Reddingsbrigade.png" alt="Reddingsbrigade">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/KNRM.png" alt="KNRM">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/ProRail.png" alt="ProRail">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Rijkswaterstaat.png" alt="Rijkswaterstaat">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Ziekenhuizen.png" alt="Ziekenhuizen">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Scholen.png" alt="Scholen">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Meldkamers.png" alt="Meldkamers">
+        </div>
+        <div class="block">
+            <img src="files/images/indeximages/Provincies.png" alt="Provincies">
+        </div>
     </div>
 </body>
 </html>

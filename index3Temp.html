@@ -91,12 +91,13 @@
 
         .image-container {
             text-align: center;
-            flex: 1 1 auto; /* Zorg dat afbeeldingen zich aanpassen */
+            flex: 0 0 calc(33.333% - 10px); /* Zorg voor gelijke breedtes */
             max-width: 200px;
         }
 
         .image-container img {
-            width: 100%;
+            width: 100%; /* Zorg dat de afbeeldingen zich aanpassen */
+            height: auto; /* Behoud de verhoudingen */
             border-radius: 10px;
         }
 
@@ -107,24 +108,8 @@
         }
 
         @media (max-width: 768px) {
-            .slider {
-                height: 300px;
-            }
-
-            .slide {
-                height: 300px;
-            }
-
-            .content h1 {
-                font-size: 2.5em;
-            }
-
-            .content p {
-                font-size: 1.2em;
-            }
-
             .image-container {
-                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
+                flex: 0 0 calc(33.333% - 5px); /* Pas marges aan voor kleinere schermen */
             }
 
             .image-container p {
@@ -188,15 +173,21 @@
     <div class="image-row">
         <div class="image-container">
             <img src="files/images/voertuig1.jpg" alt="Voertuig 1">
-            
+            <p>
+                <a href="https://www.facebook.com/kor.heidinga" target="_blank" style="color: #fff; text-decoration: underline;">©Kor Heidinga</a>
+            </p>
         </div>
         <div class="image-container">
             <img src="files/images/voertuig2.jpg" alt="Voertuig 2">
-            
+            <p>
+                <a href="https://www.facebook.com/kor.heidinga" target="_blank" style="color: #fff; text-decoration: underline;">©Kor Heidinga</a>
+            </p>
         </div>
         <div class="image-container">
             <img src="files/images/voertuig3.jpg" alt="Voertuig 3">
-            
+            <p>
+                <a href="https://www.facebook.com/kor.heidinga" target="_blank" style="color: #fff; text-decoration: underline;">©Kor Heidinga</a>
+            </p>
         </div>
     </div>
 </body>

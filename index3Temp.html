@@ -124,8 +124,6 @@
             text-align: center;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            width: 150px; /* Verklein de blokken voor mobiel */
-            height: 120px; /* Hoogte van de blokken */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -135,27 +133,24 @@
             background-color: #555;
         }
 
-        /* Responsive styles */
-        @media (max-width: 1024px) {
-            .block {
-                width: 120px; /* Verklein de blokken op tablet */
-                height: 100px;
-            }
-        }
-
+        /* Responsive styles voor 2 kolommen op mobiel */
         @media (max-width: 768px) {
+            .blocks-container {
+                justify-content: space-between;
+            }
             .block {
-                width: 100px; /* Verklein de blokken verder op mobiel */
+                width: 48%; /* Twee kolommen op mobiel */
                 height: 90px;
                 font-size: 1em;
             }
         }
 
-        @media (max-width: 480px) {
+        /* Responsive styles voor 5 kolommen op pc */
+        @media (min-width: 769px) {
             .block {
-                width: 100%; /* Volledige breedte voor mobiele schermen */
-                height: 80px;
-                font-size: 0.9em; /* Kleinere tekst op mobiel */
+                width: 18%; /* Vijf kolommen op pc */
+                height: 90px;
+                font-size: 1.2em;
             }
         }
     </style>

@@ -93,6 +93,25 @@
             transform: scale(1.05); /* Kleine zoom bij hover */
         }
 
+        /* Afbeeldingen van voertuigen naast elkaar */
+        .image-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Ruimte tussen de afbeeldingen */
+            margin-top: 20px;
+        }
+
+        .image-container {
+            text-align: center;
+            flex: 1;
+            max-width: 300px; /* Verhoog de breedte indien nodig */
+        }
+
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
             .slider {
@@ -113,6 +132,14 @@
 
             .blocks-container {
                 grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+            }
+
+            .image-container {
+                max-width: 150px; /* Verklein de afbeeldingen op kleine schermen */
+            }
+
+            .image-container p {
+                font-size: 1em;
             }
         }
 
@@ -149,16 +176,16 @@
         </div>
     </div>
 
-    <!-- Afbeeldingen van voertuigen -->
+    <!-- Afbeeldingen van voertuigen naast elkaar -->
     <div class="image-row">
         <div class="image-container">
-            <img src="files/images/voertuig1.png" alt="Voertuig 1">
+            <img src="files/images/voertuig1.jpg" alt="Voertuig 1">
         </div>
         <div class="image-container">
-            <img src="files/images/voertuig2.png" alt="Voertuig 2">
+            <img src="files/images/voertuig2.jpg" alt="Voertuig 2">
         </div>
         <div class="image-container">
-            <img src="files/images/voertuig3.png" alt="Voertuig 3">
+            <img src="files/images/voertuig3.jpg" alt="Voertuig 3">
         </div>
     </div>
 

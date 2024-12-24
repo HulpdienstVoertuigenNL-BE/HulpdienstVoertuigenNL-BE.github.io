@@ -116,12 +116,17 @@
         .block {
             background-color: #333;
             color: #fff;
-            padding: 10px;
+            padding: 15px;
             font-size: 1.2em;
             border-radius: 10px;
             text-align: center;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            height: 120px; /* Verhoog de hoogte van de blokken */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
         }
 
         .block:hover {
@@ -142,7 +147,8 @@
 
             .block {
                 font-size: 1em; /* Kleinere tekst voor kleinere schermen */
-                padding: 8px;
+                padding: 10px;
+                height: 100px; /* Verlaag de hoogte op kleinere schermen */
             }
         }
 
@@ -175,7 +181,8 @@
 
             .block {
                 font-size: 0.9em; /* Nog kleinere tekst voor mobiele schermen */
-                padding: 6px;
+                padding: 8px;
+                height: 90px; /* Nog kleinere hoogte voor mobiele schermen */
             }
         }
     </style>

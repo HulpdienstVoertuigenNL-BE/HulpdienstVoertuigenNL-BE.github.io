@@ -69,6 +69,7 @@
             justify-items: center;
             width: 100%;
             padding: 20px;
+            margin-top: 20px; /* Zorg voor wat ruimte boven de blokken */
         }
 
         .block {
@@ -130,8 +131,10 @@
                 font-size: 1.2em;
             }
 
+            /* Blokken aanpassen op mobiele weergave */
             .blocks-container {
-                grid-template-columns: repeat(2, 1fr); /* Twee kolommen op mobiel */
+                grid-template-columns: 1fr; /* Eén kolom op mobiele schermen */
+                margin-left: 10px; /* Verplaats de blokken iets naar links */
             }
 
             .image-container {

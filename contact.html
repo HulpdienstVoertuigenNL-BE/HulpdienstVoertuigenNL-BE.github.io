@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="stylee.css">
+</head>
+<body>
+    <section id="navbar">
+        <div id="navbar-group">
+            <a href="index.html">
+                <div id="navbar-button">Home</div>
+            </a>
+            <a href="contact.html">
+                <div id="navbar-button" class="active">Contact</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="header">
+        <a id="header-logo" href="index.html">
+            <img src="Images/logo.png" alt="Logo">
+        </a>
+        <h1>HulpdienstVoertuigen</h1>
+        <h2>Neem contact op</h2>
+    </section>
+
+    <form class="contact-form" id="contactForm" action="https://formsubmit.co/info.jr04@gmail.com" method="POST">
+        <input type="hidden" name="_captcha" value="false"> 
+        
+        <label for="Naam">Naam</label>
+        <input type="text" id="name" name="Naam" placeholder="Peter Boer" required>
+        <span class="error" id="NaamError"></span>
+
+        <label for="Email">Email</label>
+        <input type="email" id="email" name="Email" placeholder="jouw@email.com" required>
+        <span class="error" id="emailError"></span>
+
+        <label for="Reden">Reden</label>
+        <select id="issue" name="Reden" required>
+            <option value="">Selecteer Reden</option>
+            <option value="vraag">Ik heb een vraag</option>
+            <option value="ontbrekende">Ontbrekende informatie</option>
+            <option value="bijgewerkt">Informatie moet bijgewerkt worden</option>
+        </select>
+
+        <label for="Bericht">Bericht</label>
+        <textarea id="message" name="Bericht" placeholder="Laat een bericht achter..." required></textarea>
+        <span class="error" id="messageError"></span>
+
+        <button type="submit">Verzenden</button>
+    </form>
+
+    <div class="popup" id="successPopup">
+        <div id="popup-group">
+            <p>Uw bericht is succesvol verzonden!</p>
+            <button onclick="closePopup()">Sluiten</button>
+        </div>
+    </div>
+
+    <section id="navbar" class="footer" style="position: absolute;">
+        <h1>© 2025 - 2025 Hulpdienstvoertuigen</h1>
+        <div id="navbar-group">
+            <a href="index.html">
+                <div id="navbar-button">Home</div>
+            </a>
+            <!-- 
+            <a href="faq.html">
+                <div id="navbar-button">FAQ</div>
+            </a>
+            <a href="api.html">
+                <div id="navbar-button">API</div>
+            </a> 
+            -->
+            <a href="contact.html">
+                <div id="navbar-button">Contact</div>
+            </a>
+        </div>
+    </section>
+    
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Voorkom standaard verzenden
+            
+            fetch(this.action, {
+                method: this.method,
+                body: new FormData(this)
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById("successPopup").style.display = "block";
+                    document.getElementById("contactForm").reset();
+                }
+            }).catch(error => console.error('Fout:', error));
+        });
+
+        function closePopup() {
+            document.getElementById("successPopup").style.display = "none";
+        }
+    </script>
+</body>
+</html>

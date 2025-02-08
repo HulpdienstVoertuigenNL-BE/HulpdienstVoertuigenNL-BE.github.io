@@ -30,7 +30,13 @@
             <a href="index.html" >
                 <div id="navbar-button">Home</div>
             </a>
-                        <a href="contact.html" >
+            <!-- <a href="faq.html">
+                <div id="navbar-button">FAQ</div>
+            </a>
+            <a href="api.html">
+                <div id="navbar-button">API</div>
+            </a> -->
+            <a href="contact.html" >
                 <div id="navbar-button">Contact</div>
             </a>
         </div>
@@ -50,11 +56,51 @@
         <div id="dropdown-holder">
             <div class="dropdown">
                 <div id="hulpdienst-dropdown" class="dropdown-button">Alle Hulpdiensten<i class="fa fa-chevron-down"></i></div>
-                <ul class="dropdown-menu"></ul>
+                <ul class="dropdown-menu">
+                    <!-- <li value="all">Alle Hulpdiensten</li>
+                    <li value="Politie">Politie</li>
+                    <li value="Brandweer">Brandweer</li>
+                    <li value="Ambulance">Ambulance</li>
+                    <li value="Reddingsbrigade">Reddingsbrigade</li>
+                    <li value="KNRM">KNRM</li>
+                    <li value="ProRail">ProRail</li>
+                    <li value="Rijkswaterstaat">Rijkswaterstaat</li>
+                    <li value="Ziekenhuizen">Ziekenhuizen</li>
+                    <li value="Scholen">Scholen</li>
+                    <li value="Meldkamers">Meldkamers</li>
+                    <li value="Provincies">Provincies</li> -->
+                </ul>
             </div>
             <div class="dropdown">
                 <div id="regio-dropdown" class="dropdown-button">Alle Regio's<i class="fa fa-chevron-down"></i></div>
-                <ul class="dropdown-menu"></ul>
+                <ul class="dropdown-menu">
+                    <!-- <li value="all">Alle Regio's</li>
+                    <li value="1">1 - Groningen (HVDG)</li>
+                    <li value="2">2 - Fryslan (VRF)</li>
+                    <li value="3">3 - Drenthe (VRD)</li>
+                    <li value="4">4 - Ijsselland (VRIJ)</li>
+                    <li value="5">5 - Twente (VRT)</li>
+                    <li value="6">6 - Noord en Oost-Gelderland (VNOG)</li>
+                    <li value="7">7 - Gelderland Midden (VGGM)</li>
+                    <li value="8">8 - Gelderland Zuid (VRGZ)</li>
+                    <li value="9">9 - Utrecht (VRU)</li>
+                    <li value="10">10 - Noord-Holland Noord (VRNHN)</li>
+                    <li value="11">11 - Zaanstreek-Waterland (VRZW)</li>
+                    <li value="12">12 - Kennemerland (VRK)</li>
+                    <li value="13">13 - Amsterdam-Amstelland (VRAA)</li>
+                    <li value="14">14 - Gooi en Vechtstreek (VRGV)</li>
+                    <li value="15">15 - Haaglanden (VRH)</li>
+                    <li value="16">16 - Hollands Midden (VRHM)</li>
+                    <li value="17">17 - Rotterdam-Rijnmond (VRR)</li>
+                    <li value="18">18 - Zuid-Holland Zuid (VRZHZ)</li>
+                    <li value="19">19 - Zeeland (VRZ)</li>
+                    <li value="20">20 - Midden- en West-Brabant (VRMWB)</li>
+                    <li value="21">21 - Brabant-Noord (VRBN)</li>
+                    <li value="22">22 - Brabant Zuid Oost (VRBZO)</li>
+                    <li value="23">23 - Limburg-Noord (VRLN)</li>
+                    <li value="24">24 - Zuid-Limburg (VRZL)</li>
+                    <li value="25">25 - Flevoland (VRFL)</li> -->
+                </ul>
             </div>
         </div>        
     </section>
@@ -64,13 +110,13 @@
             <table id="list_table">
                 <tr>
                     <th class="th-class-1">Adres</th>
-                    <th class="th-class-2">Roepnummer</th>
+                    <th class="th-class-2">Roepnaam</th>
                     <th class="th-class-3">Afkorting</th>
                     <th class="th-class-4">Type Voertuig</th>
                     <th class="th-class-5">Kenteken</th>
                     <th class="th-class-6">Bijzonderheden</th>
                 </tr>
-                <!-- Add your table rows here -->
+                <!-- Add more rows here -->
             </table>
         </section>
     </div>
@@ -93,6 +139,24 @@
             scrollbar.scrollLeft = scrolltable.scrollLeft;
         });
     </script>
+    
+    
+    
+
+    <!-- <section id="navbar" class="footer">
+        <div id="navbar-group">
+            <a href="faq.html">
+                <div id="navbar-button">FAQ</div>
+            </a>
+            <a href="api.html">
+                <div id="navbar-button">API</div>
+            </a>
+            <a href="contact.html" >
+                <div id="navbar-button">Contact</div>
+            </a>
+        </div>
+    </section> -->
+
 </body>
 
 
@@ -114,6 +178,23 @@ document.addEventListener("DOMContentLoaded", () => {
             // Toggle the current dropdown
             dropdown.classList.toggle("active");
         });
+
+        // Select an option from the dropdown
+        // options.forEach((option) => {
+        //     option.addEventListener("click", () => {
+        //         // Update the button text while keeping the icon intact
+        //         const selectedText = option.textContent;
+        //         button.innerHTML = `${selectedText} <i class="fa fa-chevron-down"></i>`; // Preserve the arrow icon
+                
+        //         button.setAttribute("data-value", option.getAttribute("value"));
+
+        //         // Close the dropdown menu
+        //         dropdown.classList.remove("active");
+
+        //         // Trigger an update
+        //         updAndClear();
+        //     });
+        // });
     });
 
     // Close dropdowns if clicked outside
@@ -124,6 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+/**
+ * Function to update the list based on dropdowns and search input.
+ */
 function updAndClear() {
     count = 100;
     updateList();

@@ -232,7 +232,7 @@ function generateVisibleRows(dataset, amount) {
     const rowsToRender = dataset.slice(0, amount);
 
     // Define the columns to include in the table
-    const columnsToInclude = ['Adres', 'Roepnaam', 'Afkorting', 'TypeVoertuig', 'Kenteken', 'Bijzonderheden'];
+    const columnsToInclude = ['Adres', 'Roepnummer', 'Afkorting', 'TypeVoertuig', 'Kenteken', 'Bijzonderheden'];
 
     rowsToRender.forEach((row) => {
         if (row.TypeVoertuig === '' && row.Adres) {

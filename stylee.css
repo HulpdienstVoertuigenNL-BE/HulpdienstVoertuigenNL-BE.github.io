@@ -20,7 +20,7 @@ body {
 
     
     width: 100%;
-    min-height: 100vh;
+    min-height: 100%;
 
     
     background-image: url(Images/BG.png); 
@@ -42,10 +42,9 @@ body {
 
 #navbar.footer {
     position: relative;
+    bottom: 0px;
     width: 100%;
     background-color: #323232;
-    margin-top: auto;
-    bottom: 0px;
 }
 
 #navbar-group {
@@ -267,62 +266,6 @@ body {
     color: var(--text-color4);
 }
 
-
-
-
-
-@media (max-width: 1100px) {
-
-    #home-info #left,
-    #home-info #right {
-        width: 48%; 
-    }
-
-    #home-info #right {
-        margin-top: auto;
-    }
-}
-
-
-@media (max-width: 900px) {
-    #home-info {
-        flex-direction: column; 
-        align-items: center; 
-        min-height: auto; 
-    }
-
-    #home-info #left,
-    #home-info #right {
-        width: 100%; 
-        max-width: 100%; 
-        text-align: center; 
-        align-self: center; 
-        top: 0; 
-    }
-
-    #home-info #left {
-        margin-bottom: 50px;
-    }
-
-    #home-info #left img,
-    #home-info #right img {
-        margin: 0 auto 20px; 
-    }
-
-    #home-info #left-text,
-    #home-info #right-text {
-        align-items: center; 
-    }
-
-    #home-info h1 {
-        font-size: clamp(24px, 6vw, 48px); 
-    }
-
-    #home-info h2 {
-        font-size: clamp(14px, 3vw, 20px); 
-    }
-}
-
 #index-list {
     display: flex;
     flex-direction: column;
@@ -411,21 +354,6 @@ body {
     transform: translateY(0);
 }
 
-
-@media (max-width: 800px) {
-    .button-row {
-        flex-wrap: wrap; 
-        gap: 20px; 
-        margin-bottom: 20px; 
-    }
-
-    .button-row > #list-images {
-        flex: 1 1 calc(50% - 10px); 
-        max-width: 250px;
-    }
-}
-
-
 #index-questions {
     display: flex;
     flex-direction: column;
@@ -482,27 +410,6 @@ body {
 #dropdown-holder .dropdown {
     position: relative;
     width: fit-content;
-}
-
-@media (max-width: 650px) {
-    #list-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #dropdown-holder {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    #hulpdienst-dropdown,
-    #regio-dropdown {
-        width: 100%;
-    }
-
-    #dropdown-holder .dropdown {
-        width: 100%;
-    }
 }
 
 #list-buttons input {
@@ -626,15 +533,22 @@ body {
     margin: 0 auto; 
     padding: 0 40px; 
     box-sizing: border-box; 
-    overflow-x: auto; 
+    overflow: hidden;
 }
 
 #table {
     width: 100%;
-    overflow-x: auto; 
+    overflow-x: scroll; 
+    white-space: nowrap; /* Prevent wrapping of table content */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE/Edge */
     margin: 0 auto;
     box-sizing: border-box; 
     border-spacing: 1px; 
+}
+
+#table::-webkit-scrollbar {
+    display: none;
 }
 
 #list_table {
@@ -859,6 +773,69 @@ body {
 }
 
 
+@media (max-width: 1100px) {
+
+    #home-info #left,
+    #home-info #right {
+        width: 48%; 
+    }
+
+    #home-info #right {
+        margin-top: auto;
+    }
+}
+
+@media (max-width: 900px) {
+    #home-info {
+        flex-direction: column; 
+        align-items: center; 
+        min-height: auto; 
+    }
+
+    #home-info #left,
+    #home-info #right {
+        width: 100%; 
+        max-width: 100%; 
+        text-align: center; 
+        align-self: center; 
+        top: 0; 
+    }
+
+    #home-info #left {
+        margin-bottom: 50px;
+    }
+
+    #home-info #left img,
+    #home-info #right img {
+        margin: 0 auto 20px; 
+    }
+
+    #home-info #left-text,
+    #home-info #right-text {
+        align-items: center; 
+    }
+
+    #home-info h1 {
+        font-size: clamp(24px, 6vw, 48px); 
+    }
+
+    #home-info h2 {
+        font-size: clamp(14px, 3vw, 20px); 
+    }
+}
+
+@media (max-width: 800px) {
+    .button-row {
+        flex-wrap: wrap; 
+        gap: 20px; 
+        margin-bottom: 20px; 
+    }
+
+    .button-row > #list-images {
+        flex: 1 1 calc(50% - 10px); 
+        max-width: 250px;
+    }
+}
 
 @media (max-width: 750px) {
 
@@ -871,6 +848,36 @@ body {
     #image-container .image-holder .holder-2,
     #image-container .image-holder .holder-3 {
         width: 70%;
+    }
+
+}
+
+@media (max-width: 650px) {
+    #list-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #dropdown-holder {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #hulpdienst-dropdown,
+    #regio-dropdown {
+        width: 100%;
+    }
+
+    #dropdown-holder .dropdown {
+        width: 100%;
+    }
+}
+
+@media (max-width: 394px) {
+
+    #wrapper {
+        flex: 1; 
+        height: calc(100dvh - 72px);
     }
 
 }

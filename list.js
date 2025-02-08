@@ -1,4 +1,3 @@
-
 const NLDropdown = {
     HulpdienstDropdown: [
         { value: "all", text: "Alle Hulpdiensten" },
@@ -49,9 +48,9 @@ const NLDropdown = {
         { value: "ON", text: "ON - Oost-Nederland" },
         { value: "MN", text: "MN - Midden-Nederland" },
         { value: "WNN", text: "WNN - West-Nederland-Noord" },
-        { value: "WNZ", text: "WNZ - West Nederland-Zuid" }, 
+        { value: "WNZ", text: "WNZ - West Nederland-Zuid" },
         { value: "ZD", text: "ZD - Zee en Delta" },
-        { value: "ZN", text: "ZN - Zuid-Nederland" }, 
+        { value: "ZN", text: "ZN - Zuid-Nederland" },
     ]
 };
 
@@ -71,7 +70,7 @@ const BEDropdown = {
     RegioDropdown: [
         { value: "all", text: "Alle Regio's" },
         { value: "Antwerpen", text: "Antwerpen" },
-        { value: "Brussel", text: "Brussel" }, 
+        { value: "Brussel", text: "Brussel" },
         { value: "Limburg", text: "Limburg" },
         { value: "Oost-Vlaanderen", text: "Oost-Vlaanderen" },
         { value: "Vlaams-Brabant", text: "Vlaams-Brabant" },
@@ -83,11 +82,6 @@ const BEDropdown = {
     ]
 };
 
-
-
-
-
-
 const table = document.getElementById('list_table');
 const input = document.getElementById('search-input');
 const hulpdienstDropdown = document.getElementById('hulpdienst-dropdown');
@@ -98,17 +92,29 @@ let preprocessedDataset = [];
 
 // Google Sheets API configuration
 const SPREADSHEET_ID = '1hu4jiDn14p6F0rtJ1dZcShN1xrktfLG4Hpa2kg0JFvE';
-const API_KEY = 'AIzaSyDyKWfNV0-D7uGYVwFWnHCvvdpRAh_ygDI'; 
-let SheetName = ''; 
+const API_KEY = 'AIzaSyDyKWfNV0-D7uGYVwFWnHCvvdpRAh_ygDI';
+let SheetName = '';
 
-// Function to fetch data from Google Sheets
+// Cache configuration
+const CACHE_KEY = 'cachedSheetData';
+const CACHE_EXPIRY = 1000 * 60 * 60; // 1 hour
+
+// Function to fetch data from Google Sheets with caching
 async function fetchDataFromGoogleSheets() {
-    console.log(SheetName)
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedTime = localStorage.getItem(`${CACHE_KEY}_time`);
+
+    if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_EXPIRY) {
+        return JSON.parse(cachedData);
+    }
+
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SheetName}?key=${API_KEY}`;
-    
+
     try {
         const response = await fetch(url);
         const data = await response.json();
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data.values));
+        localStorage.setItem(`${CACHE_KEY}_time`, Date.now());
         return data.values;
     } catch (error) {
         console.error('Error fetching data from Google Sheets:', error);
@@ -209,32 +215,38 @@ function filterAndSearchDataset(query, region, service, dataset) {
 }
 
 function generateVisibleRows(dataset, amount) {
+    const table = document.getElementById('list_table');
     const tableBody = table.querySelector('tbody');
-    
-    // Clear any existing rows
-    const rows = table.querySelectorAll('tr:not(:has(th))');
-    rows.forEach((row) => row.remove());
+
+    // If tbody doesn't exist, create it
+    if (!tableBody) {
+        const tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+    }
+
+    // Clear all rows except the header row
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
 
     const rowsToRender = dataset.slice(0, amount);
 
-    // Define the columns to include in the table (excluding 'Hulpdienst' and 'Regio')
+    // Define the columns to include in the table
     const columnsToInclude = ['Adres', 'Roepnaam', 'Afkorting', 'TypeVoertuig', 'Kenteken', 'Bijzonderheden'];
 
     rowsToRender.forEach((row) => {
-        // If TypeVoer is empty and Adres exists, create a full-width address row directly
         if (row.TypeVoertuig === '' && row.Adres) {
+            // Create a full-width address row
             const addressTr = document.createElement('tr');
             const addressTd = document.createElement('td');
             addressTd.colSpan = columnsToInclude.length; // Span across all columns
             addressTd.textContent = row.Adres;
-            addressTd.classList.add('td-address-full'); // Ensure it has td-1 class
+            addressTd.classList.add('td-address-full');
             addressTr.appendChild(addressTd);
-            tableBody.appendChild(addressTr);
+            table.appendChild(addressTr);
         } else {
-            // Create the main row
+            // Create a regular row
             const tr = document.createElement('tr');
-
-            // Optional: Add classes based on conditions
             if (row.TypeVoertuig !== '') tr.classList.add('list_even');
 
             columnsToInclude.forEach((column, colIndex) => {
@@ -244,15 +256,10 @@ function generateVisibleRows(dataset, amount) {
                 tr.appendChild(td);
             });
 
-            tableBody.appendChild(tr);
+            table.appendChild(tr);
         }
     });
 }
-
-
-
-
-
 
 // Debounce function for input events
 const debounce = (func, delay) => {
@@ -283,19 +290,25 @@ const updateList = debounce(() => {
 }, 150);
 
 // Scroll event to load more items when scrolling to the bottom
-window.onscroll = () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+window.addEventListener("scroll", () => {
+    requestAnimationFrame(() => {
+        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
-    if (scrollTop + clientHeight + 1 > scrollHeight) {
-        count += 100;
-        updateList();
-    }
-};
+        if (scrollTop + clientHeight >= scrollHeight) {
+            count += 100;
+            updateList();
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const urlParams = window.location.search.substring(1); 
+    const urlParams = window.location.search.substring(1);
     const region = urlParams; // Either 'NL' or 'BE'
     let dropdownData = null;
+
+    // Clear cache when switching sheets
+    localStorage.removeItem(CACHE_KEY);
+    localStorage.removeItem(`${CACHE_KEY}_time`);
 
     // Set the appropriate dropdown and dataset based on the region
     if (region === 'NL') {
@@ -343,11 +356,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Update the dropdown with the stored value
         hulpdienstDropdown.textContent = selectedHulpdienst; // Only set the text content
         hulpdienstDropdown.innerHTML += '<i class="fa fa-chevron-down"></i>'; // Add the dropdown icon
-    
+
         hulpdienstDropdown.setAttribute("data-value", selectedHulpdienst);
         // Clear the stored value to reset for future use
         localStorage.removeItem("selectedDropdownValue");
-    
+
         // Trigger update
         updAndClear();
     }

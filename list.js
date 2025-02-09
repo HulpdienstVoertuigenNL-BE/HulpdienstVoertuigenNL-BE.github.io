@@ -289,16 +289,23 @@ const updateList = debounce(() => {
     generateVisibleRows(filteredData, count);
 }, 150);
 
-window.addEventListener("scroll", () => {
-    requestAnimationFrame(() => {
-        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
-        // Check if the user has scrolled to the bottom of the page
-        if (scrollTop + clientHeight >= scrollHeight - 5) { // Adjust the threshold if needed
-            count += 100; // Increment the count
-            updateList(); // Call the function to update the list
-        }
-    });
+let isScrolling;
+
+window.addEventListener("scroll", () => {
+    window.clearTimeout(isScrolling);
+
+    isScrolling = setTimeout(() => {
+        requestAnimationFrame(() => {
+            const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+            // Check if the user has scrolled to the bottom of the page
+            if (scrollTop + clientHeight >= scrollHeight - 5) { // Adjust the threshold if needed
+                count += 100; // Increment the count
+                updateList(); // Call the function to update the list
+            }
+        });
+    }, 100); // Adjust the throttle time as needed
 });
 
 document.addEventListener('DOMContentLoaded', async () => {

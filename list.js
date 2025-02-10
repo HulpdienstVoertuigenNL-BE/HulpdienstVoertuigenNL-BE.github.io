@@ -276,7 +276,6 @@ function updAndClear() {
     updateList();
 }
 
-// Update list with the current filters and dataset
 const updateList = debounce(() => {
     const query = input.value;
     const regioValue = regioDropdown.getAttribute('data-value') || 'all';
@@ -290,23 +289,14 @@ const updateList = debounce(() => {
 }, 150);
 
 
-let isScrolling;
-
 window.addEventListener("scroll", () => {
-    window.clearTimeout(isScrolling);
-
-    isScrolling = setTimeout(() => {
-        requestAnimationFrame(() => {
-            const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-
-            // Check if the user has scrolled to the bottom of the page
-            if (scrollTop + clientHeight >= scrollHeight - 5) { // Adjust the threshold if needed
-                count += 100; // Increment the count
-                updateList(); // Call the function to update the list
-            }
-        });
-    }, 100); // Adjust the throttle time as needed
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 5) {
+        count += 100; // Increment the count
+        updateList(); // Update the list
+        alert('Bodem')
+    }
 });
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = window.location.search.substring(1);

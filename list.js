@@ -293,7 +293,7 @@ window.addEventListener("scroll", () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 5) {
         count += 100; // Increment the count
         updateList(); // Update the list
-        alert('Bodem')
+       
     }
 });
 

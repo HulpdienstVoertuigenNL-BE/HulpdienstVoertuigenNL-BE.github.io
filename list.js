@@ -11,8 +11,12 @@ const NLDropdown = {
         { value: "Ziekenhuizen", text: "Ziekenhuizen" },
         { value: "Scholen", text: "Scholen" },
         { value: "Meldkamers", text: "Meldkamers" },
-        { value: "Provincies", text: "Provincie" },
-        { value: "Kustwacht", text: "Kustwacht" }
+        { value: "Provincies", text: "Provincies" },
+        { value: "Kustwacht", text: "Kustwacht" },
+        { value: "Defensie", text: "Defensie" },
+        { value: "Bergingsbedrijf", text: "Bergingsbedrijf" },
+        { value: "KMAR/Douane", text: "KMAR/Douane" },
+        { value: "Rijksrederij", text: "Rijksrederij" },
     ],
 
     RegioDropdown: [
@@ -20,7 +24,7 @@ const NLDropdown = {
         { value: "1", text: "1 - Groningen (HVDG)" },
         { value: "2", text: "2 - Fryslan (VRF)" },
         { value: "3", text: "3 - Drenthe (VRD)" },
-        { value: "4", text: "4 - Ijsselland (VRIJ)" },
+        { value: "4", text: "4 - IJsselland (VRIJ)" },
         { value: "5", text: "5 - Twente (VRT)" },
         { value: "6", text: "6 - Noord en Oost-Gelderland (VNOG)" },
         { value: "7", text: "7 - Gelderland Midden (VGGM)" },
@@ -36,21 +40,32 @@ const NLDropdown = {
         { value: "17", text: "17 - Rotterdam-Rijnmond (VRR)" },
         { value: "18", text: "18 - Zuid-Holland Zuid (VRZHZ)" },
         { value: "19", text: "19 - Zeeland (VRZ)" },
-        { value: "20", text: "20 - Midden- en West-Brabant (VRMWB)" },
+        { value: "20", text: "20 - Midden en West-Brabant (VRMWB)" },
         { value: "21", text: "21 - Brabant-Noord (VRBN)" },
         { value: "22", text: "22 - Brabant Zuid Oost (VRBZO)" },
         { value: "23", text: "23 - Limburg-Noord (VRLN)" },
         { value: "24", text: "24 - Zuid-Limburg (VRZL)" },
         { value: "25", text: "25 - Flevoland (VRFL)" },
-        { value: "26", text: "26 - NIPF (IFV)" },
+        { value: "26", text: "26 - NIPV (IFV)" },
         { value: "28", text: "28 - Defentie (DF)" },
-        { value: "NN", text: "NN - Noord-Nederland" },
-        { value: "ON", text: "ON - Oost-Nederland" },
-        { value: "MN", text: "MN - Midden-Nederland" },
-        { value: "WNN", text: "WNN - West-Nederland-Noord" },
-        { value: "WNZ", text: "WNZ - West Nederland-Zuid" },
-        { value: "ZD", text: "ZD - Zee en Delta" },
-        { value: "ZN", text: "ZN - Zuid-Nederland" },
+        { value: "NN", text: "NN - Noord-Nederland (RWS)" },
+        { value: "ON", text: "ON - Oost-Nederland (RWS)" },
+        { value: "MN", text: "MN - Midden-Nederland (RWS)" },
+        { value: "WNN", text: "WNN - West-Nederland-Noord (RWS)" },
+        { value: "WNZ", text: "WNZ - West-Nederland-Zuid (RWS)" }, 
+        { value: "ZD", text: "ZD - Zee en Delta (RWS)" },
+        { value: "ZN", text: "ZN - Zuid-Nederland (RWS)" }, 
+        { value: "NN", text: "NN - Noord-Nederland (Pol)" },
+        { value: "ON", text: "ON - Oost-Nederland (Pol)" },
+        { value: "MD", text: "MD - Midden-Nederland (Pol)" },
+        { value: "NH", text: "NH - Noord-Holland (Pol)" },
+        { value: "AD", text: "AD - Amsterdam (Pol)" },
+        { value: "DH", text: "DH - Den Haag (Pol)" },
+        { value: "RT", text: "RT - Rotterdam (Pol)" },
+        { value: "ZB", text: "ZB - Zuid-Brabant (Pol)" },
+        { value: "OB", text: "OB - Oost-Brabant (Pol)" },
+        { value: "LB", text: "LB - Limburg (Pol)" }, 
+
     ]
 };
 
@@ -174,6 +189,72 @@ function populateDropdown(dropdownButton, dropdownData) {
     });
 }
 
+function filterRegioDropdown(hulpdienstValue) {
+    const regioDropdownButton = document.getElementById('regio-dropdown');
+    const regioDropdownMenu = regioDropdownButton.nextElementSibling;
+
+    // Clear current dropdown items
+    regioDropdownMenu.innerHTML = '';
+
+    // Get the appropriate dropdown data based on the region (NL or BE)
+    const dropdownData = window.location.search.includes('NL') ? NLDropdown : BEDropdown;
+
+    let filteredRegions = [];
+
+    if (hulpdienstValue === 'all') {
+        // When "Alle Hulpdiensten" is selected, show all regions
+        filteredRegions = dropdownData.RegioDropdown;
+    } else if (hulpdienstValue === 'Politie') {
+        // When "Politie" is selected, show only "Alle Regio's" and "(Pol)" regions
+        filteredRegions = dropdownData.RegioDropdown.filter(
+            region => region.value === 'all' || region.text.includes('(Pol)')
+        );
+    } else if (hulpdienstValue === 'Rijkswaterstaat') {
+        // When "RWS" is selected, show only "Alle Regio's" and "(RWS)" regions
+        filteredRegions = dropdownData.RegioDropdown.filter(
+            region => region.value === 'all' || region.text.includes('(RWS)')
+        );
+    } else {
+        // For other hulpdiensten, show all regions except those with "(Pol)" or "(RWS)"
+        filteredRegions = dropdownData.RegioDropdown.filter(
+            region => !region.text.includes('(Pol)') && !region.text.includes('(RWS)')
+        );
+    }
+
+    // Populate the RegioDropdown with the filtered regions
+    populateDropdown(regioDropdownButton, filteredRegions);
+
+    // Reinitialize the dropdown functionality
+    initializeCustomDropdown(regioDropdownButton, updAndClear);
+
+    // Reset the RegioDropdown to "Alle Regio's" when switching hulpdienst (except for "Politie" or "RWS")
+    if (hulpdienstValue !== 'Politie' && hulpdienstValue !== 'Rijkswaterstaat') {
+        regioDropdownButton.innerHTML = `Alle Regio's <i class="fa fa-chevron-down"></i>`;
+        regioDropdownButton.setAttribute('data-value', 'all');
+    }
+}
+
+function updateHulpdienstDropdown(regioValue) {
+    const hulpdienstDropdownButton = document.getElementById('hulpdienst-dropdown');
+
+    // Check if the selected region is a "Pol" or "RWS" region
+    if (regioValue && regioValue.includes('(Pol)')) {
+        // Set the HulpdienstDropdown to "Politie"
+        hulpdienstDropdownButton.innerHTML = `Politie <i class="fa fa-chevron-down"></i>`;
+        hulpdienstDropdownButton.setAttribute('data-value', 'Politie');
+
+        // Filter the RegioDropdown to show only "Alle Regio's" and "(Pol)" regions
+        filterRegioDropdown('Politie');
+    } else if (regioValue && regioValue.includes('(RWS)')) {
+        // Set the HulpdienstDropdown to "Rijkswaterstaat"
+        hulpdienstDropdownButton.innerHTML = `Rijkswaterstaat <i class="fa fa-chevron-down"></i>`;
+        hulpdienstDropdownButton.setAttribute('data-value', 'Rijkswaterstaat');
+
+        // Filter the RegioDropdown to show only "Alle Regio's" and "(RWS)" regions
+        filterRegioDropdown('Rijkswaterstaat');
+    }
+}
+
 // Function to initialize dropdown functionality
 function initializeCustomDropdown(dropdownButton, callback) {
     const dropdownMenu = dropdownButton.nextElementSibling;
@@ -190,6 +271,12 @@ function initializeCustomDropdown(dropdownButton, callback) {
             dropdownButton.innerHTML = `${item.textContent} <i class="fa fa-chevron-down"></i>`;
             dropdownButton.setAttribute('data-value', item.getAttribute('value'));
             dropdownMenu.classList.remove('visible');
+
+            // If the dropdown is the RegioDropdown, check if a "Pol" region was selected
+            if (dropdownButton.id === 'regio-dropdown') {
+                updateHulpdienstDropdown(item.textContent);
+            }
+
             callback();
         });
     });
@@ -227,6 +314,20 @@ function generateVisibleRows(dataset, amount) {
     // Clear all rows except the header row
     while (table.rows.length > 1) {
         table.deleteRow(1);
+    }
+
+    // Check if the dataset is empty
+    if (dataset.length === 0) {
+        const noMatchRow = document.createElement('tr');
+        const noMatchCell = document.createElement('td');
+        noMatchCell.colSpan = 6; // Span across all columns
+        noMatchCell.textContent = 'Geen overeenkomsten gevonden.'; // "No matches found" in Dutch
+        noMatchCell.style.textAlign = 'start'; // Center the text
+        noMatchCell.style.padding = '10px'; // Add some padding
+        noMatchCell.classList.add('list_even')
+        noMatchRow.appendChild(noMatchCell);
+        table.appendChild(noMatchRow);
+        return; // Exit the function early
     }
 
     const rowsToRender = dataset.slice(0, amount);
@@ -273,6 +374,14 @@ const debounce = (func, delay) => {
 // Update list based on input and selected filters
 function updAndClear() {
     count = 100;
+
+    // Get the selected Hulpdienst value
+    const hulpdienstValue = hulpdienstDropdown.getAttribute('data-value') || 'all';
+
+    // Filter the RegioDropdown based on the selected Hulpdienst
+    filterRegioDropdown(hulpdienstValue);
+
+    // Update the list
     updateList();
 }
 
@@ -293,7 +402,6 @@ window.addEventListener("scroll", () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 5) {
         count += 100; // Increment the count
         updateList(); // Update the list
-       
     }
 });
 

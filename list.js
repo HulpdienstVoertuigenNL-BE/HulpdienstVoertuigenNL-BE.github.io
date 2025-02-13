@@ -11,7 +11,7 @@ const NLDropdown = {
         { value: "Ziekenhuizen", text: "Ziekenhuizen" },
         { value: "Scholen", text: "Scholen" },
         { value: "Meldkamers", text: "Meldkamers" },
-        { value: "Provincies", text: "Provincies" },
+        { value: "Weginspecteurs", text: "Weginspecteurs" },
         { value: "Kustwacht", text: "Kustwacht" },
         { value: "Defensie", text: "Defensie" },
         { value: "Bergingsbedrijf", text: "Bergingsbedrijf" },
@@ -209,8 +209,8 @@ function filterRegioDropdown(hulpdienstValue) {
         filteredRegions = dropdownData.RegioDropdown.filter(
             region => region.value === 'all' || region.text.includes('(Pol)')
         );
-    } else if (hulpdienstValue === 'Rijkswaterstaat') {
-        // When "RWS" is selected, show only "Alle Regio's" and "(RWS)" regions
+    } else if (hulpdienstValue === 'Rijkswaterstaat' || hulpdienstValue === 'Weginspecteurs') {
+        // When "RWS" or "Weginspecteurs" is selected, show only "Alle Regio's" and "(RWS)" regions
         filteredRegions = dropdownData.RegioDropdown.filter(
             region => region.value === 'all' || region.text.includes('(RWS)')
         );
@@ -227,8 +227,8 @@ function filterRegioDropdown(hulpdienstValue) {
     // Reinitialize the dropdown functionality
     initializeCustomDropdown(regioDropdownButton, updAndClear);
 
-    // Reset the RegioDropdown to "Alle Regio's" when switching hulpdienst (except for "Politie" or "RWS")
-    if (hulpdienstValue !== 'Politie' && hulpdienstValue !== 'Rijkswaterstaat') {
+    // Reset the RegioDropdown to "Alle Regio's" when switching hulpdienst (except for "Politie" or "RWS" or "Weginspecteurs")
+    if (hulpdienstValue !== 'Politie' && hulpdienstValue !== 'Rijkswaterstaat' && hulpdienstValue !== 'Weginspecteurs') {
         regioDropdownButton.innerHTML = `Alle Regio's <i class="fa fa-chevron-down"></i>`;
         regioDropdownButton.setAttribute('data-value', 'all');
     }
@@ -302,6 +302,7 @@ function filterAndSearchDataset(query, region, service, dataset) {
 }
 
 function generateVisibleRows(dataset, amount) {
+
     const table = document.getElementById('list_table');
     const tableBody = table.querySelector('tbody');
 
@@ -362,7 +363,7 @@ function generateVisibleRows(dataset, amount) {
     });
 }
 
-// Debounce function for input events
+
 const debounce = (func, delay) => {
     let timer;
     return (...args) => {
@@ -371,38 +372,46 @@ const debounce = (func, delay) => {
     };
 };
 
-// Update list based on input and selected filters
+
 function updAndClear() {
     count = 100;
 
-    // Get the selected Hulpdienst value
     const hulpdienstValue = hulpdienstDropdown.getAttribute('data-value') || 'all';
 
-    // Filter the RegioDropdown based on the selected Hulpdienst
     filterRegioDropdown(hulpdienstValue);
 
-    // Update the list
     updateList();
 }
+
+
+let isScrolling = false; 
+let scrollTimeout;
 
 const updateList = debounce(() => {
     const query = input.value;
     const regioValue = regioDropdown.getAttribute('data-value') || 'all';
     const hulpdienstValue = hulpdienstDropdown.getAttribute('data-value') || 'all';
 
-    // Filter the dataset based on the selected filters
     const filteredData = filterAndSearchDataset(query, regioValue, hulpdienstValue, preprocessedDataset);
 
-    // Generate the table rows with the filtered data
     generateVisibleRows(filteredData, count);
 }, 150);
 
-
 window.addEventListener("scroll", () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 5) {
-        count += 100; // Increment the count
-        updateList(); // Update the list
-    }
+    if (isScrolling) return; 
+
+    isScrolling = true;
+
+    clearTimeout(scrollTimeout); 
+
+    scrollTimeout = setTimeout(() => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 5) {
+            count += 100; 
+            updateList(); 
+        }
+
+        isScrolling = false;
+    }, 200); 
 });
 
 

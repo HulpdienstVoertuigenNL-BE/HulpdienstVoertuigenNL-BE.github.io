@@ -374,7 +374,7 @@ const debounce = (func, delay) => {
 
 
 function updAndClear() {
-    count = 10000;
+    count = 100;
 
     const hulpdienstValue = hulpdienstDropdown.getAttribute('data-value') || 'all';
 
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeCustomDropdown(regioDropdown, updAndClear);
 
     // Initial list update
-    count = 10000;
+    count = 100;
     updateList();
 
     // Attach input event listener for search

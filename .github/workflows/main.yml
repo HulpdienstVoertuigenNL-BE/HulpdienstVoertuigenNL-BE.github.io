@@ -25,6 +25,12 @@ jobs:
       - name: Install Dependencies (if needed)
         run: npm install || echo "No dependencies to install"
 
-        env:
-          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          API_KEY: ${{ secrets.API_KEY }}
+      - name: Run list.js
+        run: node list.js
+
+      - name: Run loader.js
+        run: node loader.js
+
+    env:
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      API_KEY: ${{ secrets.API_KEY }}

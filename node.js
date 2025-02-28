@@ -1,13 +1,34 @@
-const express = require('express');
 const fetch = require('node-fetch');
+const fs = require('fs');
 const path = require('path');
-const app = express();
-const port = 3000;
+require('dotenv').config();
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+// Mock DOM elements using jsdom
+const { JSDOM } = require('jsdom');
+const { document } = new JSDOM('<!DOCTYPE html><html><body></body></html>').window;
+global.document = document;
 
+// Mock localStorage
+class LocalStorageMock {
+    constructor() {
+        this.store = {};
+    }
+    getItem(key) {
+        return this.store[key] || null;
+    }
+    setItem(key, value) {
+        this.store[key] = value;
+    }
+    removeItem(key) {
+        delete this.store[key];
+    }
+    clear() {
+        this.store = {};
+    }
+}
+global.localStorage = new LocalStorageMock();
+
+// Dropdown data
 const NLDropdown = {
     HulpdienstDropdown: [
         { value: "all", text: "Alle Hulpdiensten" },
@@ -61,9 +82,9 @@ const NLDropdown = {
         { value: "ON", text: "ON - Oost-Nederland (RWS)" },
         { value: "MN", text: "MN - Midden-Nederland (RWS)" },
         { value: "WNN", text: "WNN - West-Nederland-Noord (RWS)" },
-        { value: "WNZ", text: "WNZ - West-Nederland-Zuid (RWS)" }, 
+        { value: "WNZ", text: "WNZ - West-Nederland-Zuid (RWS)" },
         { value: "ZD", text: "ZD - Zee en Delta (RWS)" },
-        { value: "ZN", text: "ZN - Zuid-Nederland (RWS)" }, 
+        { value: "ZN", text: "ZN - Zuid-Nederland (RWS)" },
         { value: "NN", text: "NN - Noord-Nederland (Politie)" },
         { value: "ON", text: "ON - Oost-Nederland (Politie)" },
         { value: "MD", text: "MD - Midden-Nederland (Politie)" },
@@ -73,8 +94,8 @@ const NLDropdown = {
         { value: "RT", text: "RT - Rotterdam (Politie)" },
         { value: "ZB", text: "ZB - Zuid-Brabant (Politie)" },
         { value: "OB", text: "OB - Oost-Brabant (Politie)" },
-        { value: "LB", text: "LB - Limburg (Politie)" }, 
-    ]
+        { value: "LB", text: "LB - Limburg (Politie)" },
+    ],
 };
 
 const BEDropdown = {
@@ -101,19 +122,42 @@ const BEDropdown = {
         { value: "Luik", text: "Luik" },
         { value: "Luxemburg", text: "Luxemburg" },
         { value: "Waals-Brabant", text: "Waals-Brabant" },
-    ]
+    ],
 };
 
+// Google Sheets API configuration
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '';
 const API_KEY = process.env.API_KEY || '';
 let SheetName = '';
 
+// Cache configuration
+const CACHE_KEY = 'cachedSheetData';
+const CACHE_EXPIRY = 1000 * 60 * 60; // 1 hour
+
+// Function to fetch data from Google Sheets with caching
 async function fetchDataFromGoogleSheets() {
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedTime = localStorage.getItem(`${CACHE_KEY}_time`);
+
+    if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_EXPIRY) {
+        return JSON.parse(cachedData);
+    }
+
+    if (!SPREADSHEET_ID || !API_KEY) {
+        console.error('Missing required environment variables: SPREADSHEET_ID or API_KEY');
+        return [];
+    }
+
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SheetName}?key=${API_KEY}`;
+
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data.values));
+        localStorage.setItem(`${CACHE_KEY}_time`, Date.now());
         return data.values;
     } catch (error) {
         console.error('Error fetching data from Google Sheets:', error);
@@ -121,26 +165,59 @@ async function fetchDataFromGoogleSheets() {
     }
 }
 
+// Convert sheet data to JSON
 function convertSheetDataToJSON(sheetData) {
-    const headers = sheetData[0];
-    return sheetData.slice(1).map(row => {
+    const headers = sheetData[2]; // First row is the header
+    const rows = sheetData.slice(3); // Skip the first two rows (header and example row)
+
+    return rows.map(row => {
         const obj = {};
         headers.forEach((header, index) => {
-            obj[header] = row[index] ? row[index].trim() : '';
+            obj[header] = row[index] ? row[index].trim() : ''; // Trim spaces and use an empty string as fallback
         });
         return obj;
     });
 }
 
-app.get('/', async (req, res) => {
-    const region = req.query.region || 'NL';
-    SheetName = region === 'NL' ? 'MegaSheetNL' : 'MegaSheetBE';
-    const dropdownData = region === 'NL' ? NLDropdown : BEDropdown;
+// Preprocess dataset
+function preprocessDataset(dataset) {
+    return dataset.map((row) => {
+        const searchField = [
+            row.Adres,
+            row.Roepnummer,
+            row.Afkorting,
+            row.TypeVoertuig,
+            row.Kenteken,
+            row.Bijzonderheden,
+            row.Hulpdienst,
+            row.Regio,
+        ].map(field => (field ? field.toLowerCase() : '')).join(' ');
+
+        return {
+            ...row,
+            _searchField: searchField,
+        };
+    });
+}
+
+// Main function
+async function main() {
+    const urlParams = 'NL'; // Simulate URL params
+    let dropdownData = null;
+
+    if (urlParams === 'NL') {
+        dropdownData = NLDropdown;
+        SheetName = 'MegaSheetNL';
+    } else if (urlParams === 'BE') {
+        dropdownData = BEDropdown;
+        SheetName = 'MegaSheetBE';
+    }
+
     const sheetData = await fetchDataFromGoogleSheets();
     const jsonData = convertSheetDataToJSON(sheetData);
-    res.render('index', { dropdownData, jsonData, region });
-});
+    const preprocessedDataset = preprocessDataset(jsonData);
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+    console.log('Preprocessed Dataset:', preprocessedDataset);
+}
+
+main();

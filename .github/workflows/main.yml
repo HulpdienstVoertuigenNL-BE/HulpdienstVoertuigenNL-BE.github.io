@@ -1,36 +1,28 @@
-name: Run Node.js Scripts
+name: Access GitHub Secrets
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
 
 jobs:
-  run-scripts:
+  run-script:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
 
-      - name: Install Dependencies (if needed)
-        run: npm install || echo "No dependencies to install"
+      - name: Install dependencies
+        run: npm install
 
-      - name: Run list.js
+      - name: Run JavaScript Script
+        env:
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          API_KEY: ${{ secrets.API_KEY }}
         run: node list.js
-
-      - name: Run loader.js
-        run: node loader.js
-
-    env:
-      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-      API_KEY: ${{ secrets.API_KEY }}

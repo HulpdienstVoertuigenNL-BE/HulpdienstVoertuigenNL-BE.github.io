@@ -105,8 +105,8 @@ let count = 100;
 let preprocessedDataset = [];
 
 // Google Sheets API configuration
-const SPREADSHEET_ID = secrets.SPREADSHEET_ID || '';
-const API_KEY = secrets.API_KEY || '';
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '';
+const API_KEY = process.env.API_KEY || '';
 let SheetName = '';
 
 // Cache configuration

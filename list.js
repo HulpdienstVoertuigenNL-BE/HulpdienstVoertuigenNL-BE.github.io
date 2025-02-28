@@ -9,7 +9,7 @@ const NLDropdown = {
         { value: "ProRail", text: "ProRail" },
         { value: "Rijkswaterstaat", text: "Rijkswaterstaat" },
         { value: "Ziekenhuizen", text: "Ziekenhuizen" },
-        { value: "Scholen", text: "Scholen" },
+        { value: "Academies", text: "Academies" },
         { value: "Meldkamers", text: "Meldkamers" },
         { value: "Weginspecteurs", text: "Weginspecteurs" },
         { value: "Kustwacht", text: "Kustwacht" },
@@ -55,16 +55,16 @@ const NLDropdown = {
         { value: "WNZ", text: "WNZ - West-Nederland-Zuid (RWS)" }, 
         { value: "ZD", text: "ZD - Zee en Delta (RWS)" },
         { value: "ZN", text: "ZN - Zuid-Nederland (RWS)" }, 
-        { value: "NN", text: "NN - Noord-Nederland (Pol)" },
-        { value: "ON", text: "ON - Oost-Nederland (Pol)" },
-        { value: "MD", text: "MD - Midden-Nederland (Pol)" },
-        { value: "NH", text: "NH - Noord-Holland (Pol)" },
-        { value: "AD", text: "AD - Amsterdam (Pol)" },
-        { value: "DH", text: "DH - Den Haag (Pol)" },
-        { value: "RT", text: "RT - Rotterdam (Pol)" },
-        { value: "ZB", text: "ZB - Zuid-Brabant (Pol)" },
-        { value: "OB", text: "OB - Oost-Brabant (Pol)" },
-        { value: "LB", text: "LB - Limburg (Pol)" }, 
+        { value: "NN", text: "NN - Noord-Nederland (Politie)" },
+        { value: "ON", text: "ON - Oost-Nederland (Politie)" },
+        { value: "MD", text: "MD - Midden-Nederland (Politie)" },
+        { value: "NH", text: "NH - Noord-Holland (Politie)" },
+        { value: "AD", text: "AD - Amsterdam (Politie)" },
+        { value: "DH", text: "DH - Den Haag (Politie)" },
+        { value: "RT", text: "RT - Rotterdam (Politie)" },
+        { value: "ZB", text: "ZB - Zuid-Brabant (Politie)" },
+        { value: "OB", text: "OB - Oost-Brabant (Politie)" },
+        { value: "LB", text: "LB - Limburg (Politie)" }, 
     ]
 };
 
@@ -77,7 +77,7 @@ const BEDropdown = {
         { value: "Reddingsbrigade", text: "Reddingsbrigade" },
         { value: "Kustwacht", text: "Kustwacht" },
         { value: "Ziekenhuizen", text: "Ziekenhuizen" },
-        { value: "Scholen", text: "Scholen" },
+        { value: "Academies", text: "Academies" },
         { value: "Meldkamers", text: "Meldkamers" },
     ],
 
@@ -105,8 +105,8 @@ let count = 100;
 let preprocessedDataset = [];
 
 // Google Sheets API configuration
-const SPREADSHEET_ID = '1hu4jiDn14p6F0rtJ1dZcShN1xrktfLG4Hpa2kg0JFvE';
-const API_KEY = 'AIzaSyDyKWfNV0-D7uGYVwFWnHCvvdpRAh_ygDI';
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '';
+const API_KEY = process.env.API_KEY || '';
 let SheetName = '';
 
 // Cache configuration
@@ -122,10 +122,18 @@ async function fetchDataFromGoogleSheets() {
         return JSON.parse(cachedData);
     }
 
+    if (!SPREADSHEET_ID || !API_KEY) {
+        console.error('Missing required environment variables: SPREADSHEET_ID or API_KEY');
+        return [];
+    }
+
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SheetName}?key=${API_KEY}`;
 
     try {
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         localStorage.setItem(CACHE_KEY, JSON.stringify(data.values));
         localStorage.setItem(`${CACHE_KEY}_time`, Date.now());
@@ -190,26 +198,41 @@ function filterRegioDropdown(hulpdienstValue) {
 
     let filteredRegions = [];
 
+    console.log(hulpdienstValue); // Log de huidige waarde van hulpdienstValue
+
     if (hulpdienstValue === 'all') {
-        filteredRegions = dropdownData.RegioDropdown;
-    } else if (hulpdienstValue === 'Politie') {
+        // Display ALL regions when "Alle Hulpdiensten" is selected
+        filteredRegions = dropdownData.RegioDropdown; 
+        console.log('Resetting to ALL regions');
+    
+        // Reset the dropdown button to "Alle Regio's"
+        regioDropdownButton.innerHTML = `Alle Regio's <i class="fa fa-chevron-down"></i>`;
+        regioDropdownButton.setAttribute('data-value', 'all');
+    }
+     else if (hulpdienstValue === 'Politie') {
+        // Toon alleen regio's met (Politie)
         filteredRegions = dropdownData.RegioDropdown.filter(
-            region => region.value === 'all' || region.text.includes('(Pol)')
+            region => region.value === 'all' || region.text.includes('(Politie)')
         );
     } else if (hulpdienstValue === 'Rijkswaterstaat' || hulpdienstValue === 'Weginspecteurs') {
+        // Toon alleen regio's met (RWS)
         filteredRegions = dropdownData.RegioDropdown.filter(
             region => region.value === 'all' || region.text.includes('(RWS)')
         );
     } else {
+        // Verberg regio's met (Politie) en (RWS) voor andere hulpdiensten
         filteredRegions = dropdownData.RegioDropdown.filter(
-            region => !region.text.includes('(Pol)') && !region.text.includes('(RWS)')
+            region => !region.text.includes('(Politie)') && !region.text.includes('(RWS)')
         );
     }
 
+    // Vul de dropdown met de gefilterde regio's
     populateDropdown(regioDropdownButton, filteredRegions);
 
+    // Initialiseer de dropdown opnieuw
     initializeCustomDropdown(regioDropdownButton, updAndClear);
 
+    // Reset de dropdown-knop naar "Alle Regio's" als een andere hulpdienst dan Politie/Rijkswaterstaat/Weginspecteurs is geselecteerd
     if (hulpdienstValue !== 'Politie' && hulpdienstValue !== 'Rijkswaterstaat' && hulpdienstValue !== 'Weginspecteurs') {
         regioDropdownButton.innerHTML = `Alle Regio's <i class="fa fa-chevron-down"></i>`;
         regioDropdownButton.setAttribute('data-value', 'all');
@@ -219,7 +242,7 @@ function filterRegioDropdown(hulpdienstValue) {
 function updateHulpdienstDropdown(regioValue) {
     const hulpdienstDropdownButton = document.getElementById('hulpdienst-dropdown');
 
-    if (regioValue && regioValue.includes('(Pol)')) {
+    if (regioValue && regioValue.includes('(Politie)')) {
         hulpdienstDropdownButton.innerHTML = `Politie <i class="fa fa-chevron-down"></i>`;
         hulpdienstDropdownButton.setAttribute('data-value', 'Politie');
         filterRegioDropdown('Politie');
@@ -240,19 +263,36 @@ function initializeCustomDropdown(dropdownButton, callback) {
 
     dropdownItems.forEach((item) => {
         item.addEventListener('click', () => {
-            const searchInput = document.getElementById('search-input')
+            const searchInput = document.getElementById('search-input');
 
             if (searchInput) {
-                searchInput.value = '';
-            };
+                searchInput.value = ''; // Clear the search input
+            }
 
+            // Update the dropdown button text and data-value
             dropdownButton.innerHTML = `${item.textContent} <i class="fa fa-chevron-down"></i>`;
             dropdownButton.setAttribute('data-value', item.getAttribute('value'));
+
+            // Close the dropdown menu
             dropdownMenu.classList.remove('visible');
+
+            // Handle specific logic for the regio-dropdown
+            if (dropdownButton.id === 'regio-dropdown') {
+                updateHulpdienstDropdown(item.textContent);
+            }
+
+            // Always pass the hulpdienstValue to filterRegioDropdown
+            if (dropdownButton.id === 'hulpdienst-dropdown') {
+                const hulpdienstValue = item.getAttribute('value');
+                filterRegioDropdown(hulpdienstValue); // Pass the selected value
+            }
+
+            // Execute the callback function
             callback();
         });
     });
 
+    // Close the dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
             dropdownMenu.classList.remove('visible');

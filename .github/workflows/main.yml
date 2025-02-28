@@ -25,4 +25,4 @@ jobs:
         env:
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           API_KEY: ${{ secrets.API_KEY }}
-        run: node list.js
+        run: node node.js

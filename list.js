@@ -283,7 +283,7 @@ function filterAndSearchDataset(query, region, service, dataset) {
                 childIndex++;
             }
 
-            if (
+            if {(
                 matchesRegion &&
                 matchesService &&
                 (hasMatchingChild || 

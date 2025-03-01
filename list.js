@@ -108,7 +108,7 @@ const CACHE_KEY = 'cachedSheetData';
 
 async function fetchDataFromServer(region) {
     try {
-        const response = await fetch(`/api/data?region=${region}`); // Pass region as a query parameter
+        const response = await fetch(`/api/data?region=${region}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
         const data = await response.json();
@@ -141,41 +141,27 @@ function filterRegioDropdown(hulpdienstValue) {
 
     let filteredRegions = [];
 
-    console.log(hulpdienstValue); // Log de huidige waarde van hulpdienstValue
-
     if (hulpdienstValue === 'all') {
-        // Display ALL regions when "Alle Hulpdiensten" is selected
-        filteredRegions = dropdownData.RegioDropdown; 
-        console.log('Resetting to ALL regions');
-    
-        // Reset the dropdown button to "Alle Regio's"
+        filteredRegions = dropdownData.RegioDropdown;
         regioDropdownButton.innerHTML = `Alle Regio's <i class="fa fa-chevron-down"></i>`;
         regioDropdownButton.setAttribute('data-value', 'all');
-    }
-     else if (hulpdienstValue === 'Politie') {
-        // Toon alleen regio's met (Politie)
+    } else if (hulpdienstValue === 'Politie') {
         filteredRegions = dropdownData.RegioDropdown.filter(
             region => region.value === 'all' || region.text.includes('(Politie)')
         );
     } else if (hulpdienstValue === 'Rijkswaterstaat' || hulpdienstValue === 'Weginspecteurs') {
-        // Toon alleen regio's met (RWS)
         filteredRegions = dropdownData.RegioDropdown.filter(
             region => region.value === 'all' || region.text.includes('(RWS)')
         );
     } else {
-        // Verberg regio's met (Politie) en (RWS) voor andere hulpdiensten
         filteredRegions = dropdownData.RegioDropdown.filter(
             region => !region.text.includes('(Politie)') && !region.text.includes('(RWS)')
         );
     }
 
-    // Vul de dropdown met de gefilterde regio's
     populateDropdown(regioDropdownButton, filteredRegions);
-
-    // Initialiseer de dropdown opnieuw
     initializeCustomDropdown(regioDropdownButton, updAndClear);
 
-    // Reset de dropdown-knop naar "Alle Regio's" als een andere hulpdienst dan Politie/Rijkswaterstaat/Weginspecteurs is geselecteerd
     if (hulpdienstValue !== 'Politie' && hulpdienstValue !== 'Rijkswaterstaat' && hulpdienstValue !== 'Weginspecteurs') {
         regioDropdownButton.innerHTML = `Alle Regio's <i class="fa fa-chevron-down"></i>`;
         regioDropdownButton.setAttribute('data-value', 'all');
@@ -209,33 +195,27 @@ function initializeCustomDropdown(dropdownButton, callback) {
             const searchInput = document.getElementById('search-input');
 
             if (searchInput) {
-                searchInput.value = ''; // Clear the search input
+                searchInput.value = '';
             }
 
-            // Update the dropdown button text and data-value
             dropdownButton.innerHTML = `${item.textContent} <i class="fa fa-chevron-down"></i>`;
             dropdownButton.setAttribute('data-value', item.getAttribute('value'));
 
-            // Close the dropdown menu
             dropdownMenu.classList.remove('visible');
 
-            // Handle specific logic for the regio-dropdown
             if (dropdownButton.id === 'regio-dropdown') {
                 updateHulpdienstDropdown(item.textContent);
             }
 
-            // Always pass the hulpdienstValue to filterRegioDropdown
             if (dropdownButton.id === 'hulpdienst-dropdown') {
                 const hulpdienstValue = item.getAttribute('value');
-                filterRegioDropdown(hulpdienstValue); // Pass the selected value
+                filterRegioDropdown(hulpdienstValue);
             }
 
-            // Execute the callback function
             callback();
         });
     });
 
-    // Close the dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
             dropdownMenu.classList.remove('visible');
@@ -243,61 +223,49 @@ function initializeCustomDropdown(dropdownButton, callback) {
     });
 }
 
-// Function to update the height of info-group elements based on the info-box height
 function updateInfoGroupHeight() {
     document.querySelectorAll('.info-group').forEach(infoGroup => {
         const infoBox = infoGroup.querySelector('.info-box');
         if (infoBox) {
             let infoBoxHeight = infoBox.offsetHeight;
 
-            // Check if the viewport width is less than 350px
             if (window.innerWidth < 350) {
-                // Enforce a minimum height of 78px for the info-box
                 infoBox.style.minHeight = `${MIN_INFO_BOX_HEIGHT}px`;
-                infoBoxHeight = Math.max(infoBoxHeight, MIN_INFO_BOX_HEIGHT); // Ensure minimum height
+                infoBoxHeight = Math.max(infoBoxHeight, MIN_INFO_BOX_HEIGHT);
             } else {
-                // Remove min-height if viewport width is >= 350px
                 infoBox.style.minHeight = '';
             }
 
-            const newHeight = infoBoxHeight + 4; // Add 4px to the height
+            const newHeight = infoBoxHeight + 4;
             infoGroup.style.height = `${newHeight}px`;
         }
     });
 }
 
-
-// Global variables
 let filteredData = [];
-let offset = 0; // Number of rows to load per scroll
+let offset = 0;
 let isScrollting = false;
 let scrollTimeout;
-let allRowsRendered = false; // Flag to track if all rows have been rendered
+let allRowsRendered = false;
 
-// Function to filter and search the dataset
 function filterAndSearchDataset(query, region, service, dataset) {
-    console.log(query, region, service, dataset);
     const lowerQuery = query.toLowerCase();
     const filtered = [];
 
-    // Iterate through each item in the dataset
     dataset.forEach((item, index, array) => {
         const matchesRegion = region === 'all' || item.Regio === region;
         const matchesService = service === 'all' || item.Hulpdienst === service;
 
-        // Check if the current item matches the search query
         const matchesSearch =
             lowerQuery === '' ||
             item._searchField.includes(lowerQuery) ||
             item.TypeVoertuig.toLowerCase().includes(lowerQuery) ||
-            (item.Roepnummer && item.Roepnummer.toLowerCase().includes(lowerQuery)); // Added Roepnummer check
+            (item.Roepnummer && item.Roepnummer.toLowerCase().includes(lowerQuery));
 
-        // Handle address rows
         if (item.TypeVoertuig === '' && item.Adres) {
             let childIndex = index + 1;
             let hasMatchingChild = false;
 
-            // Find all child rows until the next address row
             while (
                 childIndex < array.length &&
                 array[childIndex].TypeVoertuig !== ''
@@ -306,28 +274,24 @@ function filterAndSearchDataset(query, region, service, dataset) {
                 const childMatchesSearch =
                     childRow._searchField.includes(lowerQuery) ||
                     childRow.TypeVoertuig.toLowerCase().includes(lowerQuery) ||
-                    (childRow.Roepnummer && childRow.Roepnummer.toLowerCase().includes(lowerQuery)); // Added Roepnummer check for child rows
+                    (childRow.Roepnummer && childRow.Roepnummer.toLowerCase().includes(lowerQuery));
 
                 if (childMatchesSearch) {
                     hasMatchingChild = true;
-                    break; // Stop checking once a match is found
+                    break;
                 }
                 childIndex++;
             }
 
-            // Include the address row if:
-            // - It matches the region and service filters
-            // - Either it has a matching child OR the query matches the address itself
             if (
                 matchesRegion &&
                 matchesService &&
                 (hasMatchingChild || 
                  (lowerQuery === '' || item.Adres.toLowerCase().includes(lowerQuery)))
-            ) {
+            {
                 filtered.push(item);
             }
         } else if (matchesRegion && matchesService && matchesSearch) {
-            // Include non-address rows that match the criteria
             filtered.push(item);
         }
     });
@@ -338,10 +302,9 @@ function filterAndSearchDataset(query, region, service, dataset) {
 function generateVisibleRows(dataset, amount, offset, shouldClear = false) {
     const containersHolder = document.getElementById('containers-holder');
 
-    // Clear the container only if explicitly requested (e.g., during a filter/search operation)
     if (shouldClear) {
         containersHolder.innerHTML = '';
-        offset = 0; // Reset the offset when clearing the container
+        offset = 0;
     }
 
     if (dataset.length === 0) {
@@ -354,7 +317,6 @@ function generateVisibleRows(dataset, amount, offset, shouldClear = false) {
         return;
     }
 
-    // Slice the dataset based on the offset and the amount to render
     const rowsToRender = dataset.slice(offset, offset + amount);
     let currentAddress = '';
     let currentContainer = null;
@@ -469,39 +431,35 @@ const debounce = (func, delay) => {
     };
 };
 
-
 function updateList(shouldClear = true) {
-    // Get the current query from the input field or use an empty string if cleared
-    const query = input.value || ''; 
+    const query = input.value || '';
     const region = regioDropdown.getAttribute('data-value') || 'all';
     const service = hulpdienstDropdown.getAttribute('data-value') || 'all';
 
-    // Filter the dataset based on the updated query, region, and service
     filteredData = filterAndSearchDataset(query, region, service, preprocessedDataset);
 
     if (shouldClear) {
         offset = 0;
-        allRowsRendered = false; // Reset the flag when clearing the container
+        allRowsRendered = false;
     }
 
-    generateVisibleRows(filteredData, count, offset, shouldClear); // Pass the offset and shouldClear
-    offset += count; // Update the offset for the next batch of rows
+    generateVisibleRows(filteredData, count, offset, shouldClear);
+    offset += count;
 }
 
-
 window.addEventListener('scroll', () => {
-    if (isScrollting || allRowsRendered) return; // Stop if scrolling is in progress or all rows are rendered
+    if (isScrollting || allRowsRendered) return;
     isScrollting = true;
     clearTimeout(scrollTimeout);
 
     scrollTimeout = setTimeout(() => {
         if (
             window.innerHeight + window.scrollY >= document.body.offsetHeight - 5 &&
-            !allRowsRendered && // Only proceed if not all rows are rendered
-            filteredData.length > offset // Check if there are more rows to render
+            !allRowsRendered &&
+            filteredData.length > offset
         ) {
-            generateVisibleRows(filteredData, count, offset, false); // Pass the offset and set shouldClear to false
-            offset += count; // Update the offset for the next batch of rows
+            generateVisibleRows(filteredData, count, offset, false);
+            offset += count;
         }
         isScrollting = false;
     }, 200);
@@ -510,7 +468,6 @@ window.addEventListener('scroll', () => {
 updateList(true);
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Apply selected hulpdienst instantly when the page loads
     const selectedHulpdienst = localStorage.getItem("selectedDropdownValue");
 
     if (selectedHulpdienst) {
@@ -518,12 +475,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         hulpdienstDropdown.innerHTML += '<i class="fa fa-chevron-down"></i>';
         hulpdienstDropdown.setAttribute("data-value", selectedHulpdienst);
         localStorage.removeItem("selectedDropdownValue");
-        console.log("Selected hulpdienst applied:", selectedHulpdienst); // Log the action
+        console.log("Selected hulpdienst applied:", selectedHulpdienst);
         updAndClear();
     }
 
     const urlParams = window.location.search.substring(1);
-    const region = urlParams; // Either 'NL' or 'BE'
+    const region = urlParams;
     let dropdownData = null;
 
     localStorage.removeItem(CACHE_KEY);
@@ -539,7 +496,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('a[href="../list.html?BE"]').style.color = 'var(--accent-color)';
     }
 
-    const jsonData = await fetchDataFromServer(region); // Pass the region to the backend
+    const jsonData = await fetchDataFromServer(region);
     preprocessedDataset = jsonData;
 
     if (dropdownData) {

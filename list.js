@@ -288,7 +288,7 @@ function filterAndSearchDataset(query, region, service, dataset) {
                 matchesService &&
                 (hasMatchingChild || 
                  (lowerQuery === '' || item.Adres.toLowerCase().includes(lowerQuery)))
-            {
+            ) { // Fixed: Added the missing closing parenthesis here
                 filtered.push(item);
             }
         } else if (matchesRegion && matchesService && matchesSearch) {

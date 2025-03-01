@@ -104,69 +104,18 @@ const regioDropdown = document.getElementById('regio-dropdown');
 let count = 100;
 let preprocessedDataset = [];
 
-// Google Sheets API configuration
-const SPREADSHEET_ID = '1hu4jiDn14p6F0rtJ1dZcShN1xrktfLG4Hpa2kg0JFvE';
-const API_KEY = 'AIzaSyDyKWfNV0-D7uGYVwFWnHCvvdpRAh_ygDI';
-let SheetName = '';
-
-// Cache configuration
-const CACHE_KEY = 'cachedSheetData';
-const CACHE_EXPIRY = 1000 * 60 * 60; // 1 hour
-
-// Function to fetch data from Google Sheets with caching
-async function fetchDataFromGoogleSheets() {
-    const cachedData = localStorage.getItem(CACHE_KEY);
-    const cachedTime = localStorage.getItem(`${CACHE_KEY}_time`);
-
-    if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_EXPIRY) {
-        return JSON.parse(cachedData);
-    }
-
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SheetName}?key=${API_KEY}`;
-
+async function fetchDataFromServer(region) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(`/api/data?region=${region}`); // Pass region as a query parameter
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
         const data = await response.json();
-        localStorage.setItem(CACHE_KEY, JSON.stringify(data.values));
-        localStorage.setItem(`${CACHE_KEY}_time`, Date.now());
-        return data.values;
+        console.log('Fetched data from server:', data);
+        return data;
     } catch (error) {
-        console.error('Error fetching data from Google Sheets:', error);
+        console.error('Error fetching data from server:', error);
         return [];
     }
-}
-
-function convertSheetDataToJSON(sheetData) {
-    const headers = sheetData[2]; // First row is the header
-    const rows = sheetData.slice(3); // Skip the first two rows (header and example row)
-
-    return rows.map(row => {
-        const obj = {};
-        headers.forEach((header, index) => {
-            obj[header] = row[index] ? row[index].trim() : ''; // Trim spaces and use an empty string as fallback
-        });
-        return obj;
-    });
-}
-
-function preprocessDataset(dataset) {
-    return dataset.map((row) => {
-        const searchField = [
-            row.Adres,
-            row.Roepnummer,
-            row.Afkorting,
-            row.TypeVoertuig, // Include Type Voertuig
-            row.Kenteken,
-            row.Bijzonderheden,
-            row.Hulpdienst,
-            row.Regio,
-        ].map(field => (field ? field.toLowerCase() : '')).join(' ');
-
-        return {
-            ...row,
-            _searchField: searchField,
-        };
-    });
 }
 
 function populateDropdown(dropdownButton, dropdownData) {
@@ -588,10 +537,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('a[href="../list.html?BE"]').style.color = 'var(--accent-color)';
     }
 
-    const sheetData = await fetchDataFromGoogleSheets();
-    const jsonData = convertSheetDataToJSON(sheetData);
-
-    preprocessedDataset = preprocessDataset(jsonData);
+    const jsonData = await fetchDataFromServer(region); // Pass the region to the backend
+    preprocessedDataset = jsonData;
 
     if (dropdownData) {
         populateDropdown(hulpdienstDropdown, dropdownData.HulpdienstDropdown);

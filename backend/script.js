@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
 
@@ -8,16 +8,12 @@ const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY;
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
-let SheetName = 'Sheet1'; // Dynamic sheet name (Change as needed)
+let SheetName = 'Sheet1';
 
-// Cache configuration
 const CACHE_KEY = 'cachedSheetData';
-const CACHE_EXPIRY = 1000 * 60 * 60; // 1 hour
+const CACHE_EXPIRY = 1000 * 60 * 60;
 const cache = { data: null, timestamp: 0 };
 
-/**
- * Fetch data from Google Sheets with caching
- */
 async function fetchDataFromGoogleSheets(SheetName) {
     if (cache.data && Date.now() - cache.timestamp < CACHE_EXPIRY) {
         console.log('Returning cached data');
@@ -42,25 +38,19 @@ async function fetchDataFromGoogleSheets(SheetName) {
     }
 }
 
-/**
- * Convert sheet data to JSON format
- */
 function convertSheetDataToJSON(sheetData) {
-    const headers = sheetData[0]; // First row is the header
-    const rows = sheetData.slice(1); // Skip the header row
+    const headers = sheetData[0];
+    const rows = sheetData.slice(1);
 
     return rows.map(row => {
         const obj = {};
         headers.forEach((header, index) => {
-            obj[header] = row[index] ? row[index].trim() : ''; // Trim spaces and use an empty string as fallback
+            obj[header] = row[index] ? row[index].trim() : '';
         });
         return obj;
     });
 }
 
-/**
- * Preprocess dataset for client-side usage
- */
 function preprocessDataset(dataset) {
     return dataset.map(row => {
         const searchField = [
@@ -83,15 +73,11 @@ function preprocessDataset(dataset) {
     });
 }
 
-/**
- * Serve data endpoint
- */
 app.get('/api/data', async (req, res) => {
     try {
-        const region = req.query.region || 'NL'; // Default to 'NL' if no region is provided
+        const region = req.query.region || 'NL';
         let SheetName;
 
-        // Set the SheetName based on the region
         if (region === 'NL') {
             SheetName = 'MegaSheetNL';
         } else if (region === 'BE') {
@@ -100,7 +86,7 @@ app.get('/api/data', async (req, res) => {
             throw new Error('Invalid region specified');
         }
 
-        const sheetData = await fetchDataFromGoogleSheets(SheetName); // Pass SheetName to the fetch function
+        const sheetData = await fetchDataFromGoogleSheets(SheetName);
         const jsonData = convertSheetDataToJSON(sheetData);
         const preprocessedData = preprocessDataset(jsonData);
 
@@ -111,14 +97,8 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
-/**
- * Serve static files (optional)
- */
 app.use(express.static('public'));
 
-/**
- * Start the server
- */
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

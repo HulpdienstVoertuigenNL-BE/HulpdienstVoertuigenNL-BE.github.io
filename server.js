@@ -18,7 +18,7 @@ const cache = { data: null, timestamp: 0 };
 /**
  * Fetch data from Google Sheets with caching
  */
-async function fetchDataFromGoogleSheets() {
+async function fetchDataFromGoogleSheets(SheetName) {
     if (cache.data && Date.now() - cache.timestamp < CACHE_EXPIRY) {
         console.log('Returning cached data');
         return cache.data;
@@ -88,7 +88,19 @@ function preprocessDataset(dataset) {
  */
 app.get('/api/data', async (req, res) => {
     try {
-        const sheetData = await fetchDataFromGoogleSheets();
+        const region = req.query.region || 'NL'; // Default to 'NL' if no region is provided
+        let SheetName;
+
+        // Set the SheetName based on the region
+        if (region === 'NL') {
+            SheetName = 'MegaSheetNL';
+        } else if (region === 'BE') {
+            SheetName = 'MegaSheetBE';
+        } else {
+            throw new Error('Invalid region specified');
+        }
+
+        const sheetData = await fetchDataFromGoogleSheets(SheetName); // Pass SheetName to the fetch function
         const jsonData = convertSheetDataToJSON(sheetData);
         const preprocessedData = preprocessDataset(jsonData);
 

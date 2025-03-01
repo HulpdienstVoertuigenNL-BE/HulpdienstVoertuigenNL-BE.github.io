@@ -104,6 +104,8 @@ const regioDropdown = document.getElementById('regio-dropdown');
 let count = 100;
 let preprocessedDataset = [];
 
+const CACHE_KEY = 'cachedSheetData';
+
 async function fetchDataFromServer(region) {
     try {
         const response = await fetch(`/api/data?region=${region}`); // Pass region as a query parameter

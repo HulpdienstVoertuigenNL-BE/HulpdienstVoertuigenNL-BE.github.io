@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="nl" style="overflow: hidden;"> 
+    
+<head>
+    <meta name="theme-color" content="#131313">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lijst</title>
+    <link rel="stylesheet" href="stylee.css">
+    <script defer type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script defer src="scripts/list.js"></script>
+
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C6XN7YM9YV"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C6XN7YM9YV');
+    </script>
+</head>
+
+
+<body>
+    <section id="showbox-holder">
+        <div id="showbox">
+            <div id="loader-container">
+                <div class="loader">
+                    <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="navbar">
+        <div id="navbar-region">
+            <a href="../list.html?NL" class="clickable">NL</a>
+            <a>/</a>
+            <a href="../list.html?BE" class="clickable">BE</a>
+        </div>
+    
+        <div id="navbar-group">
+            <a href="index.html">
+                <div id="navbar-button">Home</div>
+            </a>
+            <a href="contact.html">
+                <div id="navbar-button">Contact</div>
+            </a>
+            <a href="over-ons.html">
+                <div id="navbar-button">Over Ons</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="header">
+        <a id="header-logo" href="index.html">
+            <img src="img/logos/Union.png" alt="Logo">
+        </a>
+
+        <div id="header-text">
+            <h1>HulpdienstVoertuigen</h1>
+            <h2>De beste hulpdienstvoertuigen informatie in de BeNeLux</h2>
+        </div>
+    </section>
+
+    <section id="list-buttons">
+        <input id="search-input" type="text" autocomplete="off" placeholder="Zoek een adres">
+        <div id="dropdown-holder">
+            <div class="dropdown">
+                <div id="hulpdienst-dropdown" class="dropdown-button">Alle Hulpdiensten<i class="fa fa-chevron-down"></i></div>
+                <ul class="dropdown-menu">
+                    <li>Hulpdienst 1</li>
+                    <li>Hulpdienst 2</li>
+                    <li>Hulpdienst 3</li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <div id="regio-dropdown" class="dropdown-button">Alle Regio's<i class="fa fa-chevron-down"></i></div>
+                <ul class="dropdown-menu">
+                    <li>Regio 1</li>
+                    <li>Regio 2</li>
+                    <li>Regio 3</li>
+                </ul>
+            </div>
+        </div>        
+    </section>
+
+    <section id="containers-holder">
+        <div class="container">
+            <div class="header">01-10 Leek, Tolberterstraat 66</div>
+    
+            <!-- Info Group 1 -->
+            <div class="info-group">
+                <div class="info-container">
+                    <div class="info-box">
+                        <div class="label">Roepnummer</div>
+                        <div class="value">01-1000</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="toggle-btn" onclick="toggleDetails(this)">
+                            <i class="fa fa-chevron-down"></i>
+                        </div>
+                        <div class="label">Type Voertuig</div>
+                        <div class="value">Dienstauto</div>
+                    </div>
+                </div>
+                <div class="info-container toggle-section hidden">
+                    <div class="info-box">
+                        <div class="label">Afkorting</div>
+                        <div class="value">DA 5</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Kenteken</div>
+                        <div class="value">X-1234-XX</div>
+                    </div>
+                    <div class="info-box large">
+                        <div class="label">Bijzonderheden</div>
+                        <div class="value">Geen</div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Info Group 2 -->
+            <div class="info-group">
+                <div class="info-container">
+                    <div class="info-box">
+                        <div class="label">Roepnummer</div>
+                        <div class="value">02-2000</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="toggle-btn" onclick="toggleDetails(this)">
+                            <i class="fa fa-chevron-down"></i>
+                        </div>
+                        <div class="label">Type Voertuig</div>
+                        <div class="value">Tankautospuit</div>
+                    </div>
+                </div>
+                <div class="info-container toggle-section hidden">
+                    <div class="info-box">
+                        <div class="label">Afkorting</div>
+                        <div class="value">BA 3</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Kenteken</div>
+                        <div class="value">Y-5678-YY</div>
+                    </div>
+                    <div class="info-box large">
+                        <div class="label">Bijzonderheden</div>
+                        <div class="value">Geen</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="header">01-10 Leek, Tolberterstraat 66</div>
+    
+            <!-- Info Group 1 -->
+            <div class="info-group">
+                <div class="info-container">
+                    <div class="info-box">
+                        <div class="label">Roepnummer</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="toggle-btn" onclick="toggleDetails(this)">
+                            <i class="fa fa-chevron-down"></i>
+                        </div>
+                        <div class="label">Type Voertuig</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                </div>
+                <div class="info-container toggle-section hidden">
+                    <div class="info-box">
+                        <div class="label">Afkorting</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Kenteken</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                    <div class="info-box large">
+                        <div class="label">Bijzonderheden</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Info Group 2 -->
+            <div class="info-group">
+                <div class="info-container">
+                    <div class="info-box">
+                        <div class="label">Roepnummer</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="toggle-btn" onclick="toggleDetails(this)">
+                            <i class="fa fa-chevron-down"></i>
+                        </div>
+                        <div class="label">Type Voertuig</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                </div>
+                <div class="info-container toggle-section hidden">
+                    <div class="info-box">
+                        <div class="label">Afkorting</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Kenteken</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                    <div class="info-box large">
+                        <div class="label">Bijzonderheden</div>
+                        <div class="value">Placeholder</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+
+
+<script>
+// Configuration: Set this to true to allow only one info-group to be open at a time
+const SINGLE_OPEN_MODE = false; // Change to false to allow multiple info-groups to be open
+
+// Minimum height for info-box under 350px width
+const MIN_INFO_BOX_HEIGHT = 78;
+
+// Function to update the height of info-group elements based on the info-box height
+function updateInfoGroupHeight() {
+    document.querySelectorAll('.info-group').forEach(infoGroup => {
+        const infoBox = infoGroup.querySelector('.info-box');
+        if (infoBox) {
+            let infoBoxHeight = infoBox.offsetHeight;
+
+            // Check if the viewport width is less than 350px
+            if (window.innerWidth < 350) {
+                // Enforce a minimum height of 78px for the info-box
+                infoBox.style.minHeight = `${MIN_INFO_BOX_HEIGHT}px`;
+                infoBoxHeight = Math.max(infoBoxHeight, MIN_INFO_BOX_HEIGHT); // Ensure minimum height
+            } else {
+                // Remove min-height if viewport width is >= 350px
+                infoBox.style.minHeight = '';
+            }
+
+            const newHeight = infoBoxHeight + 4; // Add 4px to the height
+            infoGroup.style.height = `${newHeight}px`;
+        }
+    });
+}
+
+// Add a resize event listener to the window
+window.addEventListener('resize', () => {
+    updateInfoGroupHeight(); // Update heights on window resize
+});
+
+function toggleDetails(button) {
+    const infoGroup = button.closest('.info-group');
+    const details = infoGroup.querySelector('.toggle-section');
+    const toggleBtn = infoGroup.querySelector('.toggle-btn');
+
+    // Get the current height of the .info-box in its collapsed state
+    const infoBox = infoGroup.querySelector('.info-box');
+    let infoBoxHeight = infoBox ? infoBox.offsetHeight : 0;
+
+    // Adjust info-box height if viewport width is less than 350px
+    if (window.innerWidth < 350) {
+        infoBoxHeight = Math.max(infoBoxHeight, MIN_INFO_BOX_HEIGHT); // Ensure minimum height
+    }
+
+    let collapsedHeight = infoBoxHeight + 4; // Collapsed height (info-box height + 4px)
+
+    // If SINGLE_OPEN_MODE is true, close all other open info-groups
+    if (SINGLE_OPEN_MODE) {
+        document.querySelectorAll('.info-group').forEach((group) => {
+            if (group !== infoGroup && !group.querySelector('.toggle-section').classList.contains('hidden')) {
+                const otherDetails = group.querySelector('.toggle-section');
+                const otherToggleBtn = group.querySelector('.toggle-btn');
+
+                // Collapse the other info-group
+                otherDetails.classList.add('hidden');
+                otherToggleBtn.classList.remove('active');
+                group.style.height = `${collapsedHeight}px`; // Collapse to the collapsed height
+                requestAnimationFrame(() => {
+                    group.style.transition = 'height 0.3s ease-out, padding 0.3s ease-out, border 0.3s ease-out';
+                    group.style.height = `${collapsedHeight}px`; // Apply transition
+                    group.style.padding = '0';
+                    group.style.border = '2px solid transparent';
+                });
+
+                // Clean up after transition ends
+                group.addEventListener('transitionend', () => {
+                    group.style.transition = '';
+                }, { once: true });
+            }
+        });
+    }
+
+    // Toggle the 'hidden' class on the details section
+    const isHidden = details.classList.toggle('hidden');
+    toggleBtn.classList.toggle('active', !isHidden);
+
+    if (isHidden) {
+        // Collapse the infoGroup to the collapsed height
+        const currentHeight = infoGroup.offsetHeight; // Get the current expanded height
+        infoGroup.style.height = `${currentHeight}px`; // Set to current height to prepare for transition
+
+        requestAnimationFrame(() => {
+            infoGroup.style.transition = 'height 0.3s ease-out, padding 0.3s ease-out, border 0.3s ease-out';
+            infoGroup.style.height = `${collapsedHeight}px`; // Transition to collapsed height
+            infoGroup.style.padding = '0';
+            infoGroup.style.border = '2px solid transparent';
+        });
+
+        // Recalculate collapsedHeight after transition ends
+        infoGroup.addEventListener('transitionend', () => {
+            infoGroup.style.transition = ''; // Reset transition after it ends
+            collapsedHeight = infoBox.offsetHeight + 4; // Recalculate collapsed height
+            infoGroup.style.height = `${collapsedHeight}px`; // Ensure correct height is applied
+        }, { once: true });
+    } else {
+        // Expand the infoGroup to its natural content height
+        infoGroup.style.height = 'auto'; // Temporarily set to auto to measure the natural height
+        const expandedHeight = infoGroup.scrollHeight; // Calculate the natural height
+        infoGroup.style.height = `${collapsedHeight}px`; // Reset to collapsed height before transitioning
+
+        requestAnimationFrame(() => {
+            infoGroup.style.transition = 'height 0.3s ease-in, padding 0.3s ease-in, border 0.3s ease-in';
+            infoGroup.style.height = `${expandedHeight}px`; // Start transitioning to the expanded height
+
+            // Defer applying padding and border changes until after the next frame
+            requestAnimationFrame(() => {
+                infoGroup.style.padding = '10px';
+                infoGroup.style.border = '2px solid #2d7df6';
+            });
+        });
+
+        // Clean up after transition ends
+        infoGroup.addEventListener('transitionend', () => {
+            infoGroup.style.height = 'auto'; // Set back to auto after the transition
+            infoGroup.style.transition = '';
+        }, { once: true });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdownButtons = document.querySelectorAll('.dropdown-button');
+    const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+    const searchInput = document.getElementById('search-input'); // Get the input field
+
+    // Function to close all dropdowns
+    function closeAllDropdowns() {
+        dropdownMenus.forEach(menu => {
+            menu.classList.remove('active');
+        });
+        dropdownButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+    }
+
+    // Add event listeners to dropdown buttons
+    dropdownButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const menu = this.nextElementSibling;
+
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                this.classList.remove('active');
+            } else {
+                closeAllDropdowns();
+                menu.classList.add('active');
+                this.classList.add('active');
+            }
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.dropdown')) {
+            closeAllDropdowns();
+        }
+    });
+
+    // Add event listeners to dropdown menu items
+    dropdownMenus.forEach(menu => {
+        menu.addEventListener('click', function (e) {
+            if (e.target.tagName === 'LI') {
+                const button = this.previousElementSibling;
+                // Preserve the icon while updating the text
+                button.innerHTML = `${e.target.textContent} <i class="fa fa-chevron-down"></i>`;
+                closeAllDropdowns();
+            }
+        });
+    });
+});
+
+function updAndClear() {
+    count = 100;
+    updateList();
+}
+
+</script>

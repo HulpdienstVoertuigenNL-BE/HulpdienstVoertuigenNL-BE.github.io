@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="nl" style="overflow: hidden;"> 
+    
+<head>
+    <meta name="theme-color" content="#131313">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="stylee.css">
+    <script defer src="scripts/loader.js"></script>
+
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C6XN7YM9YV"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-C6XN7YM9YV');
+    </script>
+</head>
+
+
+<body>
+    <section id="showbox-holder">
+        <div id="showbox">
+            <div id="loader-container">
+                <div class="loader">
+                    <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="wrapper">
+        <section id="navbar">
+            <div id="navbar-group">
+                <a href="index.html">
+                    <div id="navbar-button">Home</div>
+                </a>
+                <a href="contact.html">
+                    <div id="navbar-button" class="active">Contact</div>
+                </a>
+                <a href="over-ons.html">
+                    <div id="navbar-button">Over Ons</div>
+                </a>
+            </div>
+        </section>
+    
+        <section id="header">
+            <a id="header-logo" href="index.html">
+                <img src="img/logos/Union.png" alt="Logo">
+            </a>
+    
+            <div id="header-text">
+                <h1>HulpdienstVoertuigen</h1>
+                <h2>Neem contact op</h2>
+            </div>
+        </section>
+    
+        <form class="contact-form" id="contactForm" action="/send-email" method="POST">
+            <input type="hidden" name="_captcha" value="false"> 
+            <input type="hidden" name="_subject" value="Nieuw bericht van de website">
+        
+            <div class="info-box">
+                <div class="label" for="naam">Naam</div>
+                <input type="text" id="naam" name="naam" autocomplete="off" placeholder="Pieter Boer" required>
+            </div>
+        
+            <div class="info-box">
+                <div class="label" for="email">Email</div>
+                <input type="email" id="email" name="email" autocomplete="off" placeholder="jouw@email.com" required>
+            </div>
+        
+            <div class="info-box dropdown">
+                <div class="toggle-btn">
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="label" for="reason">Reden</div>
+                <div class="info-dropdown">Selecteer Reden</div>
+                <ul class="dropdown-menu">
+                    <li>Ik heb een vraag</li>
+                    <li>Ontbrekende informatie</li>
+                    <li>Informatie moet bijgewerkt worden</li>
+                </ul>
+                <input type="hidden" name="reason" id="reason" value="Selecteer Reden">
+            </div>
+        
+            <div class="info-box">
+                <div class="label" for="bericht">Bericht</div>
+                <textarea id="bericht" name="bericht" autocomplete="off" placeholder="Laat een bericht achter" required></textarea>
+            </div>
+        
+            <button type="submit">Verzenden</button>
+        </form>
+    
+        <div id="success-message">
+            <p>Bedankt! Uw bericht is verzonden.</p>
+        </div>
+        
+        <div id="error-message">
+            <p>Er is iets misgegaan. Probeer het later opnieuw.</p>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Dropdown functionality
+                const dropdownButtons = document.querySelectorAll('.info-box.dropdown .toggle-btn');
+                const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+            
+                function closeAllDropdowns() {
+                    dropdownMenus.forEach(menu => menu.classList.remove('active'));
+                    dropdownButtons.forEach(button => {
+                        button.classList.remove('active');
+                        button.parentElement.classList.remove('active');
+                    });
+                }
+            
+                dropdownButtons.forEach(button => {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const menu = this.parentElement.querySelector('.dropdown-menu');
+                        if (menu.classList.contains('active')) {
+                            menu.classList.remove('active');
+                            this.classList.remove('active');
+                            this.parentElement.classList.remove('active');
+                        } else {
+                            closeAllDropdowns();
+                            menu.classList.add('active');
+                            this.classList.add('active');
+                            this.parentElement.classList.add('active');
+                        }
+                    });
+                });
+            
+                document.addEventListener('click', function (e) {
+                    if (!e.target.closest('.info-box.dropdown')) {
+                        closeAllDropdowns();
+                    }
+                });
+            
+                dropdownMenus.forEach(menu => {
+                    menu.addEventListener('click', function (e) {
+                        if (e.target.tagName === 'LI') {
+                            const button = this.closest('.info-box.dropdown').querySelector('.info-dropdown');
+                            const hiddenInput = this.closest('.info-box.dropdown').querySelector('#reason');
+                            button.innerHTML = `<span class="selected-text">${e.target.textContent}</span>`;
+                            hiddenInput.value = e.target.textContent;
+                            closeAllDropdowns();
+                        }
+                    });
+                });
+            
+                // Form submission handling
+                const form = document.getElementById('contactForm');
+                const successMessage = document.getElementById('success-message');
+                const errorMessage = document.getElementById('error-message');
+            
+                if (form) {
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+            
+                        const formData = new FormData(form);
+            
+                        fetch('/send-email', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(Object.fromEntries(formData))
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message === 'Email sent successfully.') {
+                                successMessage.classList.add('show');
+                                form.reset();
+            
+                                const dropdown = document.querySelector('.info-dropdown');
+                                dropdown.innerHTML = 'Selecteer Reden';
+                                dropdown.style.color = '';
+            
+                                const hiddenInput = document.querySelector('#reason');
+                                hiddenInput.value = 'Selecteer Reden';
+            
+                                setTimeout(() => {
+                                    successMessage.classList.remove('show');
+                                }, 6000);
+                            } else {
+                                errorMessage.classList.add('show');
+                                setTimeout(() => {
+                                    errorMessage.classList.remove('show');
+                                }, 6000);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            errorMessage.classList.add('show');
+                            setTimeout(() => {
+                                errorMessage.classList.remove('show');
+                            }, 6000);
+                        });
+                    });
+                }
+            });
+        </script>            
+    </body>
+</html>
